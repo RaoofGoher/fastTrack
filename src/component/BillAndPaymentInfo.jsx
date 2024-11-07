@@ -1,24 +1,40 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import 'tailwindcss/tailwind.css';
 import { useNavigate } from 'react-router-dom';
 
-// Validation Schema using Yup
-const validationSchema = Yup.object({
-  billingCycle: Yup.string().required('Billing Cycle is required'),
-  paymentMethod: Yup.string().required('Payment Method is required'),
-  invoiceDelivery: Yup.string().required('Preferred Invoice Delivery is required'),
-  creditCardNumber: Yup.string()
-    .when('paymentMethod', {
-      is: 'Credit Card',
-      then: Yup.string().required('Credit Card Number is required'),
-    })
-    .matches(/^[0-9]{16}$/, 'Credit Card Number must be 16 digits'),
-});
-
 const BillAndPaymentInformation = () => {
   const navigate = useNavigate();
+
+  const validate = (values) => {
+    const errors = {};
+
+    // Billing Cycle Validation
+    if (!values.billingCycle) {
+      errors.billingCycle = 'Billing Cycle is required';
+    }
+
+    // Payment Method Validation
+    if (!values.paymentMethod) {
+      errors.paymentMethod = 'Payment Method is required';
+    }
+
+    // Preferred Invoice Delivery Validation
+    if (!values.invoiceDelivery) {
+      errors.invoiceDelivery = 'Preferred Invoice Delivery is required';
+    }
+
+    // Credit Card Validation
+    if (values.paymentMethod === 'Credit Card') {
+      if (!values.creditCardNumber) {
+        errors.creditCardNumber = 'Credit Card Number is required';
+      } else if (!/^[0-9]{16}$/.test(values.creditCardNumber)) {
+        errors.creditCardNumber = 'Credit Card Number must be 16 digits';
+      }
+    }
+
+    return errors;
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -31,13 +47,13 @@ const BillAndPaymentInformation = () => {
           invoiceDelivery: '',
           creditCardNumber: '',
         }}
-        validationSchema={validationSchema}
+        validate={validate}
         onSubmit={(values) => {
           console.log('Form values:', values);
           navigate('/acceptance');
         }}
       >
-        {({ errors, touched, values }) => (
+        {({ values, errors, touched, handleChange, handleBlur, resetForm }) => (
           <Form className="space-y-6">
             {/* Billing Cycle Radio Buttons */}
             <div>
@@ -128,6 +144,8 @@ const BillAndPaymentInformation = () => {
                   name="creditCardNumber"
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                   placeholder="Enter 16-digit Credit Card Number"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {errors.creditCardNumber && touched.creditCardNumber && (
                   <div className="text-red-500 text-sm">{errors.creditCardNumber}</div>
@@ -165,12 +183,22 @@ const BillAndPaymentInformation = () => {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 mt-6"
-            >
-              Submit
-            </button>
+            {/* Buttons */}
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={() => resetForm()}
+                className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+              >
+                Submit
+              </button>
+            </div>
           </Form>
         )}
       </Formik>
