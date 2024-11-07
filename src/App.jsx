@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PrimaryLayout from './layouts/PrimaryLayout.jsx';
+import HomePage from './pages/HomePage.jsx';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-     <h1 className='text-red-400'>Hello</h1>
-    </>
-  )
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<PrimaryLayout />}>
+                    <Route index element={<HomePage />} />
+                    
+                </Route>
+            </Routes>
+        </Router>
+    );
 }
 
-export default App
+export default App;
