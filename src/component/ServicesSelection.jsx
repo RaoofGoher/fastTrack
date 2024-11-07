@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from 'react-router-dom';
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
   servicePlan: Yup.string().required('Service Plan Selection is required'),
-  // Make add-on services optional
   multilingualSupport: Yup.string(),
   afterHoursPremium: Yup.string(),
   technicalSupport: Yup.string(),
@@ -16,6 +16,8 @@ const validationSchema = Yup.object({
 });
 
 const ServiceSelection = () => {
+  const navigate = useNavigate();
+
   // Main service plan options
   const servicePlans = [
     { id: '1', label: 'Economy Plan (500 Minutes) - $249' },
@@ -95,6 +97,7 @@ const ServiceSelection = () => {
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log('Form values:', values);
+          navigate('/billandpayment');
         }}
       >
         {({ errors, touched, setFieldValue }) => (
@@ -117,65 +120,147 @@ const ServiceSelection = () => {
 
             <h3 className="text-lg font-semibold text-gray-700 mt-4">ADD-ON Services</h3>
 
-            {/* Multilingual Support */}
-            <div>
-              <label htmlFor="multilingualSupport" className="block text-sm font-semibold text-gray-700">
-                Multilingual Support
-              </label>
-              <Field as="select" name="multilingualSupport" id="multilingualSupport" className="mt-2 p-2 w-full border rounded-md">
-                <option value="">Select Multilingual Support (Optional)</option>
-                {addOnServices.multilingualSupport.map((service) => (
-                  <option
-                    key={service.id}
-                    value={service.id}
-                    onClick={() => {
-                      setFieldValue('multilingualSupport', service.id);
-                      console.log(`Multilingual Support selected: ${service.label} - ID: ${service.id}`);
-                    }}
-                  >
-                    {service.label}
-                  </option>
-                ))}
-              </Field>
-              {errors.multilingualSupport && touched.multilingualSupport && (
-                <div className="text-red-500 text-sm">{errors.multilingualSupport}</div>
-              )}
+            {/* Add-on Services in Two Columns */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Multilingual Support */}
+              <div>
+                <label htmlFor="multilingualSupport" className="block text-sm font-semibold text-gray-700">
+                  Multilingual Support
+                </label>
+                <Field as="select" name="multilingualSupport" id="multilingualSupport" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select Multilingual Support (Optional)</option>
+                  {addOnServices.multilingualSupport.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('multilingualSupport', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.multilingualSupport && touched.multilingualSupport && (
+                  <div className="text-red-500 text-sm">{errors.multilingualSupport}</div>
+                )}
+              </div>
+
+              {/* After-Hours & Holiday Premium */}
+              <div>
+                <label htmlFor="afterHoursPremium" className="block text-sm font-semibold text-gray-700">
+                  After-Hours & Holiday Premium
+                </label>
+                <Field as="select" name="afterHoursPremium" id="afterHoursPremium" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select After-Hours & Holiday Premium (Optional)</option>
+                  {addOnServices.afterHoursPremium.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('afterHoursPremium', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.afterHoursPremium && touched.afterHoursPremium && (
+                  <div className="text-red-500 text-sm">{errors.afterHoursPremium}</div>
+                )}
+              </div>
+
+              {/* Technical Support */}
+              <div>
+                <label htmlFor="technicalSupport" className="block text-sm font-semibold text-gray-700">
+                  Technical Support
+                </label>
+                <Field as="select" name="technicalSupport" id="technicalSupport" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select Technical Support (Optional)</option>
+                  {addOnServices.technicalSupport.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('technicalSupport', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.technicalSupport && touched.technicalSupport && (
+                  <div className="text-red-500 text-sm">{errors.technicalSupport}</div>
+                )}
+              </div>
+
+              {/* FasTrak */}
+              <div>
+                <label htmlFor="fasTrak" className="block text-sm font-semibold text-gray-700">
+                  FasTrak
+                </label>
+                <Field as="select" name="fasTrak" id="fasTrak" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select FasTrak (Optional)</option>
+                  {addOnServices.fasTrak.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('fasTrak', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.fasTrak && touched.fasTrak && (
+                  <div className="text-red-500 text-sm">{errors.fasTrak}</div>
+                )}
+              </div>
+
+              {/* ProSIWO */}
+              <div>
+                <label htmlFor="proSIWO" className="block text-sm font-semibold text-gray-700">
+                  ProSIWO
+                </label>
+                <Field as="select" name="proSIWO" id="proSIWO" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select ProSIWO (Optional)</option>
+                  {addOnServices.proSIWO.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('proSIWO', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.proSIWO && touched.proSIWO && (
+                  <div className="text-red-500 text-sm">{errors.proSIWO}</div>
+                )}
+              </div>
+
+              {/* Advanced ProSIWO */}
+              <div>
+                <label htmlFor="advancedProSIWO" className="block text-sm font-semibold text-gray-700">
+                  Advanced ProSIWO
+                </label>
+                <Field as="select" name="advancedProSIWO" id="advancedProSIWO" className="mt-2 p-2 w-full border rounded-md">
+                  <option value="">Select Advanced ProSIWO (Optional)</option>
+                  {addOnServices.advancedProSIWO.map((service) => (
+                    <option
+                      key={service.id}
+                      value={service.id}
+                      onClick={() => setFieldValue('advancedProSIWO', service.id)}
+                    >
+                      {service.label}
+                    </option>
+                  ))}
+                </Field>
+                {errors.advancedProSIWO && touched.advancedProSIWO && (
+                  <div className="text-red-500 text-sm">{errors.advancedProSIWO}</div>
+                )}
+              </div>
             </div>
 
-            {/* After-Hours & Holiday Premium */}
-            <div>
-              <label htmlFor="afterHoursPremium" className="block text-sm font-semibold text-gray-700">
-                After-Hours & Holiday Premium
-              </label>
-              <Field as="select" name="afterHoursPremium" id="afterHoursPremium" className="mt-2 p-2 w-full border rounded-md">
-                <option value="">Select After-Hours & Holiday Premium (Optional)</option>
-                {addOnServices.afterHoursPremium.map((service) => (
-                  <option
-                    key={service.id}
-                    value={service.id}
-                    onClick={() => {
-                      setFieldValue('afterHoursPremium', service.id);
-                      console.log(`After-Hours Premium selected: ${service.label} - ID: ${service.id}`);
-                    }}
-                  >
-                    {service.label}
-                  </option>
-                ))}
-              </Field>
-              {errors.afterHoursPremium && touched.afterHoursPremium && (
-                <div className="text-red-500 text-sm">{errors.afterHoursPremium}</div>
-              )}
+            {/* Submit Button */}
+            <div className="flex justify-center mt-6">
+              <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded-md">
+                Proceed to Payment
+              </button>
             </div>
-
-            {/* Other Add-On Dropdowns */}
-            {/* Repeat the same structure for technicalSupport, fasTrak, proSIWO, and advancedProSIWO dropdowns */}
-
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 mt-6"
-            >
-              Submit
-            </button>
           </Form>
         )}
       </Formik>

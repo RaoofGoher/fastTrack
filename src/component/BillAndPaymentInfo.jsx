@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from 'react-router-dom';
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
@@ -17,7 +18,7 @@ const validationSchema = Yup.object({
 });
 
 const BillAndPaymentInformation = () => {
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -33,25 +34,44 @@ const BillAndPaymentInformation = () => {
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log('Form values:', values);
+          navigate('/acceptance');
         }}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, values }) => (
           <Form className="space-y-6">
             {/* Billing Cycle Radio Buttons */}
             <div>
               <label className="block text-sm font-semibold text-gray-700">Billing Cycle *</label>
               <div className="mt-2 space-y-2">
                 <div>
-                  <Field type="radio" name="billingCycle" value="Monthly" className="mr-2" />
-                  <label htmlFor="billingCycle" className="text-sm text-gray-700">1-Monthly</label>
+                  <Field
+                    type="radio"
+                    id="billingCycleMonthly"
+                    name="billingCycle"
+                    value="Monthly"
+                    className="mr-2"
+                  />
+                  <label htmlFor="billingCycleMonthly" className="text-sm text-gray-700">1-Monthly</label>
                 </div>
                 <div>
-                  <Field type="radio" name="billingCycle" value="Quarterly" className="mr-2" />
-                  <label htmlFor="billingCycle" className="text-sm text-gray-700">2-Quarterly</label>
+                  <Field
+                    type="radio"
+                    id="billingCycleQuarterly"
+                    name="billingCycle"
+                    value="Quarterly"
+                    className="mr-2"
+                  />
+                  <label htmlFor="billingCycleQuarterly" className="text-sm text-gray-700">2-Quarterly</label>
                 </div>
                 <div>
-                  <Field type="radio" name="billingCycle" value="Annual" className="mr-2" />
-                  <label htmlFor="billingCycle" className="text-sm text-gray-700">3-Annual (10% discount applied)</label>
+                  <Field
+                    type="radio"
+                    id="billingCycleAnnual"
+                    name="billingCycle"
+                    value="Annual"
+                    className="mr-2"
+                  />
+                  <label htmlFor="billingCycleAnnual" className="text-sm text-gray-700">3-Annual (10% discount applied)</label>
                 </div>
               </div>
               {errors.billingCycle && touched.billingCycle && (
@@ -66,32 +86,32 @@ const BillAndPaymentInformation = () => {
                 <div>
                   <Field
                     type="radio"
+                    id="paymentMethodCreditCard"
                     name="paymentMethod"
                     value="Credit Card"
                     className="mr-2"
-                    onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <label htmlFor="paymentMethod" className="text-sm text-gray-700">1-Credit Card (2% processing fee)</label>
+                  <label htmlFor="paymentMethodCreditCard" className="text-sm text-gray-700">1-Credit Card (2% processing fee)</label>
                 </div>
                 <div>
                   <Field
                     type="radio"
+                    id="paymentMethodACH"
                     name="paymentMethod"
                     value="ACH Transfer"
                     className="mr-2"
-                    onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <label htmlFor="paymentMethod" className="text-sm text-gray-700">2-ACH Transfer</label>
+                  <label htmlFor="paymentMethodACH" className="text-sm text-gray-700">2-ACH Transfer</label>
                 </div>
                 <div>
                   <Field
                     type="radio"
+                    id="paymentMethodBank"
                     name="paymentMethod"
                     value="Bank Transfer"
                     className="mr-2"
-                    onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <label htmlFor="paymentMethod" className="text-sm text-gray-700">3-Bank Transfer</label>
+                  <label htmlFor="paymentMethodBank" className="text-sm text-gray-700">3-Bank Transfer</label>
                 </div>
               </div>
               {errors.paymentMethod && touched.paymentMethod && (
@@ -100,7 +120,7 @@ const BillAndPaymentInformation = () => {
             </div>
 
             {/* Credit Card Number Field (only visible if "Credit Card" is selected) */}
-            {paymentMethod === 'Credit Card' && (
+            {values.paymentMethod === 'Credit Card' && (
               <div>
                 <label className="block text-sm font-semibold text-gray-700">Credit Card Number</label>
                 <Field
@@ -120,31 +140,29 @@ const BillAndPaymentInformation = () => {
               <label className="block text-sm font-semibold text-gray-700">Preferred Invoice Delivery *</label>
               <div className="mt-2 space-y-2">
                 <div>
-                  <Field type="radio" name="invoiceDelivery" value="Email" className="mr-2" />
-                  <label htmlFor="invoiceDelivery" className="text-sm text-gray-700">1-Email</label>
+                  <Field
+                    type="radio"
+                    id="invoiceDeliveryEmail"
+                    name="invoiceDelivery"
+                    value="Email"
+                    className="mr-2"
+                  />
+                  <label htmlFor="invoiceDeliveryEmail" className="text-sm text-gray-700">1-Email</label>
                 </div>
                 <div>
-                  <Field type="radio" name="invoiceDelivery" value="Text" className="mr-2" />
-                  <label htmlFor="invoiceDelivery" className="text-sm text-gray-700">2-Text</label>
+                  <Field
+                    type="radio"
+                    id="invoiceDeliveryText"
+                    name="invoiceDelivery"
+                    value="Text"
+                    className="mr-2"
+                  />
+                  <label htmlFor="invoiceDeliveryText" className="text-sm text-gray-700">2-Text</label>
                 </div>
               </div>
               {errors.invoiceDelivery && touched.invoiceDelivery && (
                 <div className="text-red-500 text-sm">{errors.invoiceDelivery}</div>
               )}
-            </div>
-
-            {/* Terms and Conditions Section */}
-            <div className="border-t-2 border-gray-300 mt-6 pt-4">
-              <h3 className="text-lg font-semibold text-gray-700">Terms and Conditions</h3>
-              <p className="text-sm text-gray-600">
-                <strong>Contract Duration:</strong> 12 months, with automatic renewal unless canceled with 60-day notice.
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Due Date:</strong> Payment is due within 30 days of invoice date. Late fees of 1.5% per month apply to overdue balances.
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Service Suspension:</strong> FasTrak Connect reserves the right to suspend services if payment is not received within 45 days.
-              </p>
             </div>
 
             <button

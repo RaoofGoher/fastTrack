@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from 'react-router-dom';
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
@@ -11,6 +12,8 @@ const validationSchema = Yup.object({
 });
 
 const SalesOrder = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h2 className="text-2xl font-bold text-center mb-6">Sales Order</h2>
@@ -24,6 +27,7 @@ const SalesOrder = () => {
         validationSchema={validationSchema}
         onSubmit={(values) => {
           console.log('Form values:', values);
+          navigate('/serviceselection');
         }}
       >
         {({ errors, touched }) => (
@@ -82,7 +86,7 @@ const SalesOrder = () => {
                 type="submit"
                 className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
               >
-                Submit
+                Submit & Next
               </button>
             </div>
           </Form>
