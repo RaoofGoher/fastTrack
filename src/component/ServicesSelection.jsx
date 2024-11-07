@@ -255,10 +255,25 @@ const ServiceSelection = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="flex justify-center mt-6">
-              <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded-md">
-                Proceed to Payment
+            <div className="flex justify-between mt-6">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
+              >
+                Back
+              </button>
+              <button
+                type="reset"
+                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+              >
+                Submit
               </button>
             </div>
           </Form>

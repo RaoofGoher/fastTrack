@@ -184,11 +184,17 @@ const BillAndPaymentInformation = () => {
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-between">
+            <div className="flex justify-between mt-6">
               <button
                 type="button"
-                onClick={() => resetForm()}
+                onClick={() => navigate(-1)}
                 className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
+              >
+                Back
+              </button>
+              <button
+                type="reset"
+                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
               >
                 Cancel
               </button>
