@@ -88,44 +88,43 @@ const ServiceSelection = () => {
   const handleSubmit = async (values) => {
     console.log('values', values);
   
-    // Transform the values to match the API payload
+    // Prepare the payload to send to the API
     const payload = {
       services_selected: {
         service_plan: {
-          id: parseInt(values.servicePlan), // Convert string to number
+          id: values.servicePlan ? parseInt(values.servicePlan) : undefined, // Only include if valid
         },
-        multilingual_support: {
-          agents: parseInt(values.multilingualSupport), // Convert string to number
-        },
-        after_hours_holiday_premium: {
-          hours: parseInt(values.afterHoursPremium), // Convert string to number
-        },
-        technical_support: {
-          hours: parseInt(values.technicalSupport), // Convert string to number
-        },
-        fastrak_briefcase: {
-          price_per_month: 50, // Static value as per your API
-        },
-        starter_prosiwo: {
-          price_per_month: 30, // Static value as per your API
-        },
-        advanced_prosiwo: {
-          price_per_month: 80.0, // Static value as per your API
-        },
+        multilingual_support: values.multilingualSupport ? { agents: parseInt(values.multilingualSupport) } : undefined,
+        after_hours_holiday_premium: values.afterHoursPremium ? { hours: parseInt(values.afterHoursPremium) } : undefined,
+        technical_support: values.technicalSupport ? { hours: parseInt(values.technicalSupport) } : undefined,
+        fastrak_briefcase: values.fasTrak ? { price_per_month: 50 } : undefined,  // Adjust price as per selection
+        starter_prosiwo: values.proSIWO ? { price_per_month: 30 } : undefined,    // Adjust price as per selection
+        advanced_prosiwo: values.advancedProSIWO ? { price_per_month: 80 } : undefined,  // Adjust price as per selection
       },
       billing_details: {
-        billing_cycle: values.billingCycle || 'annual', // Ensure 'annual' is default
-        payment_method: values.billing_details.payment_method || 'cash', // Default to 'cash'
+        billing_cycle: values.billingCycle || 'annual',  // Default to 'annual' if not provided
+        payment_method: values.billing_details?.payment_method || 'cash',  // Default to 'cash'
       },
     };
   
+    // Clean out any undefined properties from the payload
+    const cleanedPayload = JSON.parse(JSON.stringify(payload));  // Remove undefined values
+    Object.keys(cleanedPayload.services_selected).forEach((key) => {
+      if (cleanedPayload.services_selected[key] === undefined) {
+        delete cleanedPayload.services_selected[key];
+      }
+    });
+  
+    console.log('Cleaned Payload:', cleanedPayload);
+  
     try {
-      const response = await createOrderBilling({ orderId, payload }).unwrap();
+      const response = await createOrderBilling({ orderId, payload: cleanedPayload }).unwrap();
       console.log('Order created successfully:', response);
     } catch (error) {
       console.error('Failed to create order:', error);
     }
   };
+  
 
   return (
     <div className="max-w-2xl mx-auto p-4">
