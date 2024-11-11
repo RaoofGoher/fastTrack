@@ -185,7 +185,7 @@ const BillAndPaymentInformation = () => {
 
             {/* Buttons */}
             <div className="flex justify-between mt-6">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => navigate(-1)}
                 className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
@@ -197,7 +197,7 @@ const BillAndPaymentInformation = () => {
                 className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
               >
                 Cancel
-              </button>
+              </button> */}
               <button
                 type="submit"
                 className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
