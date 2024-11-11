@@ -2,8 +2,8 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCreateOrderBillingMutation } from '../services/fastrackApi';
 // Validation Schema using Yup
 const validationSchema = Yup.object({
   servicePlan: Yup.string().required('Service Plan Selection is required'),
@@ -13,11 +13,17 @@ const validationSchema = Yup.object({
   fasTrak: Yup.string(),
   proSIWO: Yup.string(),
   advancedProSIWO: Yup.string(),
+   billing_details: Yup.object({
+      billing_cycle: Yup.string().required('Billing cycle is required'),
+      payment_method: Yup.string().required('Payment method is required'),
+    }),
 });
 
 const ServiceSelection = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const [createOrderBilling] = useCreateOrderBillingMutation();
+  const { orderId } = location.state || {};
   // Main service plan options
   const servicePlans = [
     { id: '1', label: 'Economy Plan (500 Minutes) - $249' },
@@ -79,6 +85,47 @@ const ServiceSelection = () => {
       { id: '1', label: '$149/month' }
     ]
   };
+  const handleSubmit = async (values) => {
+    console.log('values', values);
+  
+    // Transform the values to match the API payload
+    const payload = {
+      services_selected: {
+        service_plan: {
+          id: parseInt(values.servicePlan), // Convert string to number
+        },
+        multilingual_support: {
+          agents: parseInt(values.multilingualSupport), // Convert string to number
+        },
+        after_hours_holiday_premium: {
+          hours: parseInt(values.afterHoursPremium), // Convert string to number
+        },
+        technical_support: {
+          hours: parseInt(values.technicalSupport), // Convert string to number
+        },
+        fastrak_briefcase: {
+          price_per_month: 50, // Static value as per your API
+        },
+        starter_prosiwo: {
+          price_per_month: 30, // Static value as per your API
+        },
+        advanced_prosiwo: {
+          price_per_month: 80.0, // Static value as per your API
+        },
+      },
+      billing_details: {
+        billing_cycle: values.billingCycle || 'annual', // Ensure 'annual' is default
+        payment_method: values.billing_details.payment_method || 'cash', // Default to 'cash'
+      },
+    };
+  
+    try {
+      const response = await createOrderBilling({ orderId, payload }).unwrap();
+      console.log('Order created successfully:', response);
+    } catch (error) {
+      console.error('Failed to create order:', error);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -92,15 +139,17 @@ const ServiceSelection = () => {
           technicalSupport: '',
           fasTrak: '',
           proSIWO: '',
-          advancedProSIWO: ''
+          advancedProSIWO: '',
+          billingCycle: '',
+          billing_details: {
+            billing_cycle: 'annual', // Default billing cycle
+            payment_method: 'cash', // Default payment method
+          },
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log('Form values:', values);
-          navigate('/billandpayment');
-        }}
+        onSubmit={handleSubmit}
       >
-        {({ errors, touched, setFieldValue }) => (
+        {({ errors, touched }) => (
           <Form className="space-y-6">
             {/* Service Plan Selection */}
             <div>
@@ -130,11 +179,7 @@ const ServiceSelection = () => {
                 <Field as="select" name="multilingualSupport" id="multilingualSupport" className="mt-2 p-2 w-full border rounded-md">
                   <option value="">Select Multilingual Support (Optional)</option>
                   {addOnServices.multilingualSupport.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('multilingualSupport', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -152,11 +197,7 @@ const ServiceSelection = () => {
                 <Field as="select" name="afterHoursPremium" id="afterHoursPremium" className="mt-2 p-2 w-full border rounded-md">
                   <option value="">Select After-Hours & Holiday Premium (Optional)</option>
                   {addOnServices.afterHoursPremium.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('afterHoursPremium', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -174,11 +215,7 @@ const ServiceSelection = () => {
                 <Field as="select" name="technicalSupport" id="technicalSupport" className="mt-2 p-2 w-full border rounded-md">
                   <option value="">Select Technical Support (Optional)</option>
                   {addOnServices.technicalSupport.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('technicalSupport', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -196,11 +233,7 @@ const ServiceSelection = () => {
                 <Field as="select" name="fasTrak" id="fasTrak" className="mt-2 p-2 w-full border rounded-md">
                   <option value="">Select FasTrak (Optional)</option>
                   {addOnServices.fasTrak.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('fasTrak', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -210,19 +243,15 @@ const ServiceSelection = () => {
                 )}
               </div>
 
-              {/* ProSIWO */}
+              {/* Pro SIWO */}
               <div>
                 <label htmlFor="proSIWO" className="block text-sm font-semibold text-gray-700">
-                  ProSIWO
+                  Pro SIWO
                 </label>
                 <Field as="select" name="proSIWO" id="proSIWO" className="mt-2 p-2 w-full border rounded-md">
-                  <option value="">Select ProSIWO (Optional)</option>
+                  <option value="">Select Pro SIWO (Optional)</option>
                   {addOnServices.proSIWO.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('proSIWO', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -232,19 +261,15 @@ const ServiceSelection = () => {
                 )}
               </div>
 
-              {/* Advanced ProSIWO */}
+              {/* Advanced Pro SIWO */}
               <div>
                 <label htmlFor="advancedProSIWO" className="block text-sm font-semibold text-gray-700">
-                  Advanced ProSIWO
+                  Advanced Pro SIWO
                 </label>
                 <Field as="select" name="advancedProSIWO" id="advancedProSIWO" className="mt-2 p-2 w-full border rounded-md">
-                  <option value="">Select Advanced ProSIWO (Optional)</option>
+                  <option value="">Select Advanced Pro SIWO (Optional)</option>
                   {addOnServices.advancedProSIWO.map((service) => (
-                    <option
-                      key={service.id}
-                      value={service.id}
-                      onClick={() => setFieldValue('advancedProSIWO', service.id)}
-                    >
+                    <option key={service.id} value={service.id}>
                       {service.label}
                     </option>
                   ))}
@@ -255,25 +280,26 @@ const ServiceSelection = () => {
               </div>
             </div>
 
-            <div className="flex justify-between mt-6">
-              {/* <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
-              >
-                Back
-              </button>
-              <button
-                type="reset"
-                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
-              >
-                Cancel
-              </button> */}
-              <button
-                type="submit"
-                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-              >
-                Save & Next
+            {/* Billing Cycle */}
+            <div>
+              <label htmlFor="billingCycle" className="block text-sm font-semibold text-gray-700">
+                Billing Cycle Selection *
+              </label>
+              <Field as="select" name="billingCycle" id="billingCycle" className="mt-2 p-2 w-full border rounded-md">
+                <option value="">Select Billing Cycle</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="annually">Annually</option>
+              </Field>
+              {errors.billingCycle && touched.billingCycle && (
+                <div className="text-red-500 text-sm">{errors.billingCycle}</div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="text-center mt-6">
+              <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md">
+                Proceed to Billing & Payment
               </button>
             </div>
           </Form>

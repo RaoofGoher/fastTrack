@@ -22,13 +22,20 @@ const SalesOrder = () => {
   const handleSubmit = async (values) => {
     // Send the order data to the API
     try {
-     const resposne = await createOrder({
+     const response = await createOrder({
       order_date: values.order_date,
       client_id:id
       }).unwrap(); // unwrap to get the result or handle the error
 
-      console.log("sales Order",resposne)
-      navigate('/serviceselection'); // Navigate after successful order creation
+      console.log("sales Order",response)
+      navigate('/serviceselection'
+        , {
+          state: {
+            orderId: response.order_pk_id,
+          },
+        }
+
+      ); // Navigate after successful order creation
     } catch (error) {
       console.error('Error creating order:', error);
     }
