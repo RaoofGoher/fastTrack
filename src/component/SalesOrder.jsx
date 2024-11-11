@@ -2,17 +2,44 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCreateOrderMutation } from '../services/orderApi';
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
   salesOrderNo: Yup.string().required('Sales Order No is required'),
-  dateOfOrder: Yup.date().required('Date of Order is required').nullable(),
+  order_date: Yup.date().required('Date of Order is required').nullable(),
   clientId: Yup.string().required('Client ID is required'),
 });
 
 const SalesOrder = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const { clientId, orderId , id } = location.state || {};
+  const [createOrder, { isLoading, isSuccess, isError }] = useCreateOrderMutation();
+
+  const handleSubmit = async (values) => {
+    // Send the order data to the API
+    try {
+     const response = await createOrder({
+      order_date: values.order_date,
+      client_id:id
+      }).unwrap(); // unwrap to get the result or handle the error
+
+      console.log("sales Order",response)
+      navigate('/serviceselection'
+        , {
+          state: {
+            orderId: response.order_pk_id,
+          },
+        }
+
+      ); // Navigate after successful order creation
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -20,15 +47,12 @@ const SalesOrder = () => {
 
       <Formik
         initialValues={{
-          salesOrderNo: '',
-          dateOfOrder: '',
-          clientId: '',
+          salesOrderNo:  orderId || '',
+          order_date: '',
+          clientId: clientId || '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log('Form values:', values);
-          navigate('/serviceselection');
-        }}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
           <Form className="space-y-4">
@@ -50,17 +74,17 @@ const SalesOrder = () => {
 
             {/* Date of Order */}
             <div>
-              <label htmlFor="dateOfOrder" className="block text-sm font-semibold text-gray-700">
+              <label htmlFor="order_date" className="block text-sm font-semibold text-gray-700">
                 Date of Order *
               </label>
               <Field
                 type="date"
-                id="dateOfOrder"
-                name="dateOfOrder"
-                className={`mt-2 p-2 w-full border ${errors.dateOfOrder && touched.dateOfOrder ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                id="order_date"
+                name="order_date"
+                className={`mt-2 p-2 w-full border ${errors.order_date && touched.order_date ? 'border-red-500' : 'border-gray-300'} rounded-md`}
               />
-              {errors.dateOfOrder && touched.dateOfOrder && (
-                <div className="text-red-500 text-sm">{errors.dateOfOrder}</div>
+              {errors.order_date && touched.order_date && (
+                <div className="text-red-500 text-sm">{errors.order_date}</div>
               )}
             </div>
 
@@ -82,7 +106,7 @@ const SalesOrder = () => {
 
             {/* Submit Button */}
             <div className="flex justify-between mt-6">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => navigate(-1)}
                 className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
@@ -94,7 +118,7 @@ const SalesOrder = () => {
                 className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
               >
                 Cancel
-              </button>
+              </button> */}
               <button
                 type="submit"
                 className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"

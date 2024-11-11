@@ -3,22 +3,24 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import 'tailwindcss/tailwind.css';
 import { useNavigate } from 'react-router-dom';
+import { useAddClientMutation } from '../services/clientApi';
 
 // Validation Schema using Yup
 const validationSchema = Yup.object({
-  clientName: Yup.string().required('Client Name is required'),
-  businessName: Yup.string().required('Business Name is required'),
+  client_name: Yup.string().required('Client Name is required'),
+  business_name: Yup.string().required('Business Name is required'),
   address: Yup.string().required('Address is required'),
   city: Yup.string().required('City is required'),
   country: Yup.string().required('Country is required'),
-  contactPerson: Yup.string().required('Contact Person is required'),
-  phoneNumber: Yup.string().required('Phone Number is required')
+  // contactPerson: Yup.string().required('Contact Person is required'),
+  phone_number: Yup.string().required('Phone Number is required')
     .matches(/^\+?[1-9]\d{1,14}$/, 'Phone number is not valid'),
-  emailAddress: Yup.string().email('Invalid email address').required('Email Address is required'),
+  client_email: Yup.string().email('Invalid email address').required('Email Address is required'),
 });
 
 const ClientInformation = () => {
   const navigate = useNavigate();
+  const [addClient] = useAddClientMutation();
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -26,19 +28,32 @@ const ClientInformation = () => {
 
       <Formik
         initialValues={{
-          clientName: '',
-          businessName: '',
+          client_name: '',
+          business_name: '',
           address: '',
           city: '',
           country: '',
-          contactPerson: '',
-          phoneNumber: '',
-          emailAddress: '',
+          // contactPerson: '',
+          phone_number: '',
+          client_email: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log('Form values:', values);
-          navigate('/salesorder');
+         onSubmit={async (values, { setSubmitting }) => {
+          try {
+            const response = await addClient(values).unwrap();
+            console.log("client info", response);
+            navigate('/salesorder', {
+              state: {
+                clientId: response.client.client_id,
+                orderId: response.order_id,
+                id:response.client.id
+              },
+            });
+          } catch (error) {
+            console.error('Failed to submit client information:', error);
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({ errors, touched }) => (
@@ -46,33 +61,33 @@ const ClientInformation = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Client Name */}
               <div>
-                <label htmlFor="clientName" className="block text-sm font-semibold text-gray-700">
+                <label htmlFor="client_name" className="block text-sm font-semibold text-gray-700">
                   Client Name *
                 </label>
                 <Field
                   type="text"
-                  id="clientName"
-                  name="clientName"
-                  className={`mt-2 p-2 w-full border ${errors.clientName && touched.clientName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                  id="client_name"
+                  name="client_name"
+                  className={`mt-2 p-2 w-full border ${errors.client_name && touched.client_name ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
-                {errors.clientName && touched.clientName && (
-                  <div className="text-red-500 text-sm">{errors.clientName}</div>
+                {errors.client_name && touched.client_name && (
+                  <div className="text-red-500 text-sm">{errors.client_name}</div>
                 )}
               </div>
 
               {/* Business Name */}
               <div>
-                <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700">
+                <label htmlFor="business_name" className="block text-sm font-semibold text-gray-700">
                   Business Name *
                 </label>
                 <Field
                   type="text"
-                  id="businessName"
-                  name="businessName"
-                  className={`mt-2 p-2 w-full border ${errors.businessName && touched.businessName ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                  id="business_name"
+                  name="business_name"
+                  className={`mt-2 p-2 w-full border ${errors.business_name && touched.business_name ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
-                {errors.businessName && touched.businessName && (
-                  <div className="text-red-500 text-sm">{errors.businessName}</div>
+                {errors.business_name && touched.business_name && (
+                  <div className="text-red-500 text-sm">{errors.business_name}</div>
                 )}
               </div>
 
@@ -125,7 +140,7 @@ const ClientInformation = () => {
               </div>
 
               {/* Contact Person */}
-              <div>
+              {/* <div>
                 <label htmlFor="contactPerson" className="block text-sm font-semibold text-gray-700">
                   Contact Person *
                 </label>
@@ -138,44 +153,44 @@ const ClientInformation = () => {
                 {errors.contactPerson && touched.contactPerson && (
                   <div className="text-red-500 text-sm">{errors.contactPerson}</div>
                 )}
-              </div>
+              </div> */}
 
               {/* Phone Number */}
               <div>
-                <label htmlFor="phoneNumber" className="block text-sm font-semibold text-gray-700">
+                <label htmlFor="phone_number" className="block text-sm font-semibold text-gray-700">
                   Phone Number *
                 </label>
                 <Field
                   type="text"
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  className={`mt-2 p-2 w-full border ${errors.phoneNumber && touched.phoneNumber ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                  id="phone_number"
+                  name="phone_number"
+                  className={`mt-2 p-2 w-full border ${errors.phone_number && touched.phone_number ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
-                {errors.phoneNumber && touched.phoneNumber && (
-                  <div className="text-red-500 text-sm">{errors.phoneNumber}</div>
+                {errors.phone_number && touched.phone_number && (
+                  <div className="text-red-500 text-sm">{errors.phone_number}</div>
                 )}
               </div>
 
               {/* Email Address */}
               <div>
-                <label htmlFor="emailAddress" className="block text-sm font-semibold text-gray-700">
+                <label htmlFor="client_email" className="block text-sm font-semibold text-gray-700">
                   Email Address *
                 </label>
                 <Field
                   type="email"
-                  id="emailAddress"
-                  name="emailAddress"
-                  className={`mt-2 p-2 w-full border ${errors.emailAddress && touched.emailAddress ? 'border-red-500' : 'border-gray-300'} rounded-md`}
+                  id="client_email"
+                  name="client_email"
+                  className={`mt-2 p-2 w-full border ${errors.client_email && touched.client_email ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 />
-                {errors.emailAddress && touched.emailAddress && (
-                  <div className="text-red-500 text-sm">{errors.emailAddress}</div>
+                {errors.client_email && touched.client_email && (
+                  <div className="text-red-500 text-sm">{errors.client_email}</div>
                 )}
               </div>
             </div>
 
             {/* Buttons */}
             <div className="flex justify-between mt-6">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => navigate(-1)}
                 className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
@@ -187,7 +202,7 @@ const ClientInformation = () => {
                 className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
               >
                 Cancel
-              </button>
+              </button> */}
               <button
                 type="submit"
                 className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
