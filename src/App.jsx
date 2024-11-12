@@ -8,6 +8,7 @@ import Acceptence from './component/Acceptance.jsx';
 import SalesOrder from './component/SalesOrder.jsx';
 import Invoice from './component/Invoice.jsx';
 import ConnectWithDrive from './component/ConnectWithDrive.jsx';
+import DriveForm from './component/DriveForm.jsx';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                     <Route path='/acceptance' element={<Acceptence />} />
                     <Route path='/invoice' element={<Invoice />} />
                     <Route path='/drive' element={<ConnectWithDrive />} />
+                    <Route path='/driveform' element={<DriveForm />} />
                 
                     
                 </Route>
