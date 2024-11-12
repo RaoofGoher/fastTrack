@@ -120,6 +120,13 @@ const ServiceSelection = () => {
     try {
       const response = await createOrderBilling({ orderId, payload: cleanedPayload }).unwrap();
       console.log('Order created successfully:', response);
+      navigate('/invoice'
+        , {
+          state: {
+            data: response,
+          },
+        }
+      )
     } catch (error) {
       console.error('Failed to create order:', error);
     }

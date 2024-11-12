@@ -6,6 +6,7 @@ import ServicesSelection from './component/ServicesSelection.jsx';
 import BillAndPayment from './component/BillAndPaymentInfo.jsx';
 import Acceptence from './component/Acceptance.jsx';
 import SalesOrder from './component/SalesOrder.jsx';
+import Invoice from './component/Invoice.jsx';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path='/serviceselection' element={<ServicesSelection />} />
                     <Route path='/billandpayment' element={<BillAndPayment />} />
                     <Route path='/acceptance' element={<Acceptence />} />
+                    <Route path='/invoice' element={<Invoice />} />
                 
                     
                 </Route>
