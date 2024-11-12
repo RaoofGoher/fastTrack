@@ -8,7 +8,7 @@ const ConnectWithDriveCard = () => {
       <div className="p-6">
         <h2 className="text-xl font-semibold text-gray-800">Connect Your Drive</h2>
         <p className="mt-2 text-gray-600">
-          Easily connect with your Google Drive to access and manage your files directly.
+          Easily connect with your Google Drive to access and manage your files directly
         </p>
       </div>
 
