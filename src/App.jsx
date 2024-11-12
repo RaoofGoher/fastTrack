@@ -7,6 +7,7 @@ import BillAndPayment from './component/BillAndPaymentInfo.jsx';
 import Acceptence from './component/Acceptance.jsx';
 import SalesOrder from './component/SalesOrder.jsx';
 import Invoice from './component/Invoice.jsx';
+import ConnectWithDrive from './component/ConnectWithDrive.jsx';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                     <Route path='/billandpayment' element={<BillAndPayment />} />
                     <Route path='/acceptance' element={<Acceptence />} />
                     <Route path='/invoice' element={<Invoice />} />
+                    <Route path='/drive' element={<ConnectWithDrive />} />
                 
                     
                 </Route>
