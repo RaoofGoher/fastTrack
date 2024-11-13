@@ -295,7 +295,7 @@ const ServiceSelection = () => {
                 <option value="">Select Billing Cycle</option>
                 <option value="monthly">Monthly</option>
                 <option value="quarterly">Quarterly</option>
-                <option value="annually">Annually</option>
+                <option value="annual">Annually</option>
               </Field>
               {errors.billingCycle && touched.billingCycle && (
                 <div className="text-red-500 text-sm">{errors.billingCycle}</div>
