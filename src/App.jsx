@@ -18,7 +18,7 @@ import Education from './component/careers/Educations.jsx'
 import VideoIntro from './component/careers/VideoIntro.jsx'
 import Attachements from './component/careers/Attachements.jsx'
 import Confirmation from './component/careers/Confirmation.jsx'
-
+import OAuthCallback from './component/OuthCallBack.jsx'
 
 function App() {
     return (
