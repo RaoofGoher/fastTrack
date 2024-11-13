@@ -1,8 +1,9 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import { useNavigate } from "react-router-dom";
 const SkillsAssessment = () => {
+  const navigate = useNavigate();
   // Validation schema
   const validationSchema = Yup.object({
     languages: Yup.array()
@@ -22,6 +23,7 @@ const SkillsAssessment = () => {
   // Submit handler
   const handleSubmit = (values) => {
     console.log("Form submitted:", values);
+    navigate("/education")
   };
 
   return (

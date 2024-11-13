@@ -1,9 +1,13 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const PositionInformationForm = () => {
+  
+  const navigate = useNavigate()
   // Validation schema
+
   const validationSchema = Yup.object({
     position: Yup.string().required("Position is required"),
     employmentType: Yup.string().required("Employment type is required"),
@@ -24,6 +28,7 @@ const PositionInformationForm = () => {
   // Submit handler
   const handleSubmit = (values) => {
     console.log("Form submitted:", values);
+    navigate("/professionalexp");
   };
 
   return (

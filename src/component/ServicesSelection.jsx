@@ -295,7 +295,7 @@ const ServiceSelection = () => {
                 <option value="">Select Billing Cycle</option>
                 <option value="monthly">Monthly</option>
                 <option value="quarterly">Quarterly</option>
-                <option value="annually">Annually</option>
+                <option value="annual">Annually</option>
               </Field>
               {errors.billingCycle && touched.billingCycle && (
                 <div className="text-red-500 text-sm">{errors.billingCycle}</div>
@@ -305,7 +305,7 @@ const ServiceSelection = () => {
             {/* Submit Button */}
             <div className="text-center mt-6">
               <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md">
-                Proceed to Billing & Payment
+                Proceed to Invoice
               </button>
             </div>
           </Form>

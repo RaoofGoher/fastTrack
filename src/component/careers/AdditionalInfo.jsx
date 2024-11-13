@@ -1,8 +1,10 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 const AdditionalInformation = () => {
+  const navigate = useNavigate();
   const validationSchema = Yup.object({
     fasTrakInterest: Yup.string().required('This field is required'),
     strongFit: Yup.string().required('This field is required'),
@@ -23,6 +25,7 @@ const AdditionalInformation = () => {
         onSubmit={(values) => {
           // Handle form submission
           console.log(values);
+          navigate('/videoIntro');
         }}
       >
         {({ errors, touched }) => (

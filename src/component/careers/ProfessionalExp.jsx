@@ -1,18 +1,19 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
+import { useNavigate } from "react-router-dom";
 const ProfessionalExperienceForm = () => {
+  const navigate = useNavigate();
   // Validation schema
   const validationSchema = Yup.object({
-    recentJobTitle: Yup.string().required("Most recent job title is required"),
-    recentCompany: Yup.string().required("Company name is required"),
-    recentDuration: Yup.string().required("Duration is required"),
-    recentResponsibilities: Yup.string().required("Responsibilities are required"),
-    previousJobTitle: Yup.string(),
-    previousCompany: Yup.string(),
-    previousDuration: Yup.string(),
-    previousResponsibilities: Yup.string(),
+    // recentJobTitle: Yup.string().required("Most recent job title is required"),
+    // recentCompany: Yup.string().required("Company name is required"),
+    // recentDuration: Yup.string().required("Duration is required"),
+    // recentResponsibilities: Yup.string().required("Responsibilities are required"),
+    // previousJobTitle: Yup.string(),
+    // previousCompany: Yup.string(),
+    // previousDuration: Yup.string(),
+    // previousResponsibilities: Yup.string(),
   });
 
   // Initial values
@@ -30,6 +31,7 @@ const ProfessionalExperienceForm = () => {
   // Submit handler
   const handleSubmit = (values) => {
     console.log("Form submitted:", values);
+    navigate("/skillassement"); // Navigate to skills page
   };
 
   return (
