@@ -3,8 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useNavigate } from "react-router-dom";
 
 const PersonalInformationForm = () => {
+  const navigate = useNavigate();
   // Form validation schema
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -32,6 +34,7 @@ const PersonalInformationForm = () => {
   // Form submit handler
   const handleSubmit = (values) => {
     console.log("Form submitted:", values);
+    navigate('/positioninfo')
   };
 
   return (
@@ -87,11 +90,13 @@ const PersonalInformationForm = () => {
               <label className="block text-sm font-medium text-gray-700" htmlFor="phone">
                 Phone Number <span className="text-red-500">*</span>
               </label>
+              <div className="phone-input-container">
               <PhoneInput
                 country={"pk"}
-                inputClass="!w-full !px-4 !py-2 !rounded-md !border !mt-1"
+                inputClass="!w-full px-4 !py-2 !rounded-md !border !mt-1 "
                 onChange={(value) => setFieldValue("phone", value)}
               />
+               </div>
               <ErrorMessage
                 name="phone"
                 component="div"

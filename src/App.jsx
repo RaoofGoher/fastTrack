@@ -11,6 +11,13 @@ import ConnectWithDrive from './component/ConnectWithDrive.jsx';
 import DriveForm from './component/DriveForm.jsx';
 import CareerPage from './pages/CareerPage.jsx';
 import UploadButton from './component/UploadDocs.jsx';
+import PositionInfo from './component/careers/PositionInfo.jsx'
+import ProfessionalExp from './component/careers/ProfessionalExp.jsx'
+import SkillAssement from './component/careers/SkillAssesment.jsx'
+import Education from './component/careers/Educations.jsx'
+import VideoIntro from './component/careers/VideoIntro.jsx'
+import Attachements from './component/careers/Attachements.jsx'
+import Confirmation from './component/careers/confirmation.jsx'
 
 
 function App() {
@@ -29,6 +36,14 @@ function App() {
                     <Route path='/driveform' element={<DriveForm />} />
                     <Route path='/careers' element={<CareerPage />} />
                     <Route path='/uploaddocs' element={<UploadButton />} />
+                    {/* Careers */}
+                    <Route path='/positioninfo' element={<PositionInfo />} />
+                    <Route path='/professionalexp' element={<ProfessionalExp />} />
+                    <Route path='/skillassement' element={<SkillAssement />} />
+                    <Route path='/education' element={<Education />} />
+                    <Route path='/videointro' element={<VideoIntro />} />
+                    <Route path='/attachements' element={<Attachements />} />
+                    <Route path='/confirmation' element={<Confirmation />} />
                 
                     
                 </Route>

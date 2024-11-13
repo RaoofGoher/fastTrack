@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.phone-input-container .flag-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center; /* Ensures flag and code are aligned properly */
+  }
+  
+  .phone-input-container input {
+    padding-left: 1300px; /* Adjust padding if flag overlaps */
+  }
