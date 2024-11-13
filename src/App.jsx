@@ -17,7 +17,7 @@ import SkillAssement from './component/careers/SkillAssesment.jsx'
 import Education from './component/careers/Educations.jsx'
 import VideoIntro from './component/careers/VideoIntro.jsx'
 import Attachements from './component/careers/Attachements.jsx'
-import Confirmation from './component/careers/confirmation.jsx'
+import Confirmation from './component/careers/confirmatio.jsx'
 
 
 function App() {
