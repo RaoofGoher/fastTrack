@@ -305,7 +305,7 @@ const ServiceSelection = () => {
             {/* Submit Button */}
             <div className="text-center mt-6">
               <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md">
-                Proceed to Billing & Payment
+                Proceed to Invoice
               </button>
             </div>
           </Form>

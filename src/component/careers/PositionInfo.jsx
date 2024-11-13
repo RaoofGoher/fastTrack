@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const PositionInformationForm = () => {
   
-  const navigate = useNavigate
+  const navigate = useNavigate()
   // Validation schema
 
   const validationSchema = Yup.object({

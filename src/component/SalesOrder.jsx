@@ -62,6 +62,7 @@ const SalesOrder = () => {
                 Sales Order No *
               </label>
               <Field
+               readOnly
                 type="text"
                 id="salesOrderNo"
                 name="salesOrderNo"
@@ -78,6 +79,7 @@ const SalesOrder = () => {
                 Date of Order *
               </label>
               <Field
+              
                 type="date"
                 id="order_date"
                 name="order_date"
@@ -94,6 +96,7 @@ const SalesOrder = () => {
                 Client ID *
               </label>
               <Field
+              readOnly
                 type="text"
                 id="clientId"
                 name="clientId"
