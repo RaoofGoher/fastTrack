@@ -44,6 +44,7 @@ function App() {
                     <Route path='/videointro' element={<VideoIntro />} />
                     <Route path='/attachements' element={<Attachements />} />
                     <Route path='/confirmation' element={<Confirmation />} />
+                    <Route path="/oauth-callback" element={<OAuthCallback />} />
                 
                     
                 </Route>
