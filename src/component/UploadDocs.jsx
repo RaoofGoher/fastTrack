@@ -8,9 +8,9 @@ const UploadButtonRedirect = () => {
       <div className="flex items-center justify-center">
         <Link
           to="/driveform" // Using Link for declarative navigation
-          className="cursor-pointer inline-flex items-center justify-center space-x-2 rounded-md border-2 border-dashed border-gray-400 bg-white px-6 py-4 text-xl font-semibold text-gray-600 hover:bg-gray-100"
+          className="cursor-pointer inline-flex items-center justify-center space-x-2 rounded-md border-2 border-dashed border-blue-400 bg-white px-6 py-4 text-xl font-semibold text-gray-600 hover:bg-gray-100"
         >
-          <AiOutlineUpload className="text-2xl" />
+          <AiOutlineUpload className="text-2xl text-blue" />
           <span>Upload</span>
         </Link>
       </div>

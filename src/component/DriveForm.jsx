@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useUploadFileMutation } from "../services/uploadApi.js"; // Import the upload mutation hook
 
 const DriveForm = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadFile] = useUploadFileMutation(); // Initialize RTK Query hook
 
   const initialValues = {
     title: "",
@@ -32,9 +34,22 @@ const DriveForm = () => {
     setUploadedFile(file);
   };
 
-  const handleSubmit = (values) => {
-    console.log("Form Values:", values);
-    console.log("Uploaded File:", uploadedFile);
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+    formData.append("file", uploadedFile); // Add the file to FormData
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("documentId", values.documentId);
+    formData.append("expiryDate", values.expiryDate);
+
+    try {
+      const response = await uploadFile(formData).unwrap(); // Send the FormData to the API
+      console.log("File uploaded successfully:", response);
+      // Optionally, handle success response
+    } catch (error) {
+      console.error("File upload failed:", error);
+      // Optionally, handle error
+    }
   };
 
   return (
