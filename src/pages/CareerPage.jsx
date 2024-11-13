@@ -1,9 +1,10 @@
 import React from 'react'
+import PersonalInfo from '../component/careers/PersonalInfo'
 
 const CareerPage = () => {
   return (
     <div>
-      <h1>hello from careers</h1>
+     <PersonalInfo/>
     </div>
   )
 }

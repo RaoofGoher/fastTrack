@@ -27,6 +27,7 @@ function App() {
                     <Route path='/drive' element={<ConnectWithDrive />} />
                     <Route path='/driveform' element={<DriveForm />} />
                     <Route path='/careers' element={<CareerPage />} />
+                    <Route path='/drivesuccess' element={<CareerPage />} />
                 
                     
                 </Route>
