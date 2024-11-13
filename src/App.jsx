@@ -10,6 +10,7 @@ import Invoice from './component/Invoice.jsx';
 import ConnectWithDrive from './component/ConnectWithDrive.jsx';
 import DriveForm from './component/DriveForm.jsx';
 import CareerPage from './pages/CareerPage.jsx';
+import UploadButton from './component/UploadDocs.jsx';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
                     <Route path='/drive' element={<ConnectWithDrive />} />
                     <Route path='/driveform' element={<DriveForm />} />
                     <Route path='/careers' element={<CareerPage />} />
-                    <Route path='/drivesuccess' element={<CareerPage />} />
+                    <Route path='/uploaddocs' element={<UploadButton />} />
                 
                     
                 </Route>
