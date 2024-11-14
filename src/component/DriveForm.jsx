@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-
+import { useLocation } from 'react-router-dom';
 const DriveForm = () => {
+  const location = useLocation();
   const [uploadedFile, setUploadedFile] = useState(null);
   const [fileError, setFileError] = useState(null);
+   
+  
+  const { token } = location.state || {};
 
   // Formik initialization
   const formik = useFormik({
@@ -28,7 +32,7 @@ const DriveForm = () => {
       formData.append("expiryDate", values.expiryDate);
 
       // Get the access token from local storage (or other global state)
-      const accessToken = localStorage.getItem("access_token"); // Adjust based on your app's state management
+      const accessToken = token; // Adjust based on your app's state management
 
       if (!accessToken) {
         console.error("No access token found!");
