@@ -7,10 +7,10 @@ const DriveForm = () => {
   const location = useLocation();
   const [uploadedFile, setUploadedFile] = useState(null);
   const [fileError, setFileError] = useState(null);
-   
-  
-  const { token } = location.state || {};
 
+
+  const { token } = location.state || {};
+ console.log("hello from drive token",token)
   // Formik initialization
   const formik = useFormik({
     initialValues: {
