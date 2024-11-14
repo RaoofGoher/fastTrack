@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrimaryLayout from './layouts/PrimaryLayout.jsx';
+import AdminLayout from './layouts/AdminLayout.jsx';
 import HomePage from './pages/HomePage.jsx';
+import AdminPage from './pages/AdminPage.jsx';
 import ServicesSelection from './component/ServicesSelection.jsx';
 import BillAndPayment from './component/BillAndPaymentInfo.jsx';
 import Acceptence from './component/Acceptance.jsx';
@@ -52,6 +54,10 @@ function App() {
                     <Route path='/signin' element={<SignIn />} />
                 
                     
+                </Route>
+
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminPage />} />       
                 </Route>
             </Routes>
         </Router>
