@@ -17,12 +17,12 @@ const DriveForm = () => {
       title: '',
       description: '',
       documentId: '', // You can get this value if needed
-      expiryDate: '',
+      expiry_date: '',
     },
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
       description: Yup.string().required('Description is required'),
-      expiryDate: Yup.date().required('Expiry date is required').nullable(),
+      expiry_date: Yup.date().required('Expiry date is required'),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
@@ -40,9 +40,9 @@ const DriveForm = () => {
       formData.append("description", values.description);
     
       // Format expiryDate to yyyy-mm-dd
-      const formattedDate = new Date(values.expiryDate).toISOString().split('T')[0];
+      const formattedDate = new Date(values.expiry_date).toISOString().split('T')[0];
       console.log("Formatted Expiry Date: ", formattedDate);
-      formData.append("expiryDate", formattedDate);
+      formData.append("expiry_date", formattedDate);
     
       const accessToken = token; // Use token from location state
       if (!accessToken) {
@@ -133,18 +133,18 @@ const DriveForm = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700">Expiry Date</label>
+          <label htmlFor="expiry_date" className="block text-sm font-medium text-gray-700">Expiry Date</label>
           <input
-            id="expiryDate"
-            name="expiryDate"
+            id="expiry_date"
+            name="expiry_date"
             type="date"
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.expiryDate}
+            value={formik.values.expiry_date}
           />
-          {formik.touched.expiryDate && formik.errors.expiryDate ? (
-            <div className="text-red-500 text-sm">{formik.errors.expiryDate}</div>
+          {formik.touched.expiry_date && formik.errors.expiry_date ? (
+            <div className="text-red-500 text-sm">{formik.errors.expiry_date}</div>
           ) : null}
         </div>
 
