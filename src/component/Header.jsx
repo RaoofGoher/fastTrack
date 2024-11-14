@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaClock, FaBars, FaTimes } from 'react-icons/fa';
-
+import { Link } from 'react-router-dom';
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -11,13 +11,14 @@ const Header = () => {
     return (
         <div className="relative flex items-center justify-between p-4 bg-white shadow-md">
             {/* Logo Section */}
+            <Link to={"/"}>
             <div className="flex items-center space-x-2">
                 <div>
                     <h1 className="text-xl font-bold">FASTRAK CONNECT</h1>
                     <p className="text-sm text-gray-600">MANAGED SERVICE RELATIONSHIP</p>
                 </div>
             </div>
-
+            </Link>
             {/* Hamburger Icon or Cross Button */}
             <div className="lg:hidden">
                 <button

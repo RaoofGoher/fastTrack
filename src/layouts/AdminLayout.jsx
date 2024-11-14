@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight, FaTachometerAlt, FaUsers, FaCog } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaTachometerAlt, FaUsers, FaCog, FaSignOutAlt,FaPowerOff } from "react-icons/fa";
 import Header from '../component/Header';
 import Footer from '../component/Footer';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // Toggle sidebar open/close
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
+  };
+
+  // Sign out function (you can replace this with your sign-out logic, e.g., clearing authentication token)
+  const handleSignOut = () => {
+    // Sign out logic, for example:
+    // localStorage.removeItem("authToken");
+    // window.location.href = "/login"; // Redirect to login page
+    console.log("User signed out");
   };
 
   return (
@@ -55,6 +64,24 @@ const AdminLayout = () => {
               {isSidebarOpen && <span>Settings</span>}
             </li>
           </ul>
+
+          {/* Sign out button */}
+          <div className="mt-auto p-4">
+            <button
+              onClick={handleSignOut}
+              className={`flex items-center ml-[-10px] ${isSidebarOpen ? "px-5" : "px-1"} py-2 bg-orange-500 text-white hover:bg-red-600 hover:text-white transition rounded`}
+            >
+              {/* Only show the full button when the sidebar is open */}
+              {isSidebarOpen ? (
+                <>
+                  <FaSignOutAlt className="mr-4" />
+                  <span>Sign Out</span>
+                </>
+              ) : (
+                <FaPowerOff className="ml-2 mr-2 text-white" size={18}  />
+              )}
+            </button>
+          </div>
 
           <div className="p-4 border-t border-gray-700">
             {isSidebarOpen && (
