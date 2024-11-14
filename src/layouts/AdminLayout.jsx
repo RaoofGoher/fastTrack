@@ -50,7 +50,7 @@ const AdminLayout = () => {
 
         <div className="p-4 border-t border-gray-700">
           {isSidebarOpen && (
-            <p className="text-sm text-gray-400">© 2024 Admin Dashboard</p>
+            <p className="text-sm text-gray-400">© 2024 FastrackConnect</p>
           )}
         </div>
       </div>

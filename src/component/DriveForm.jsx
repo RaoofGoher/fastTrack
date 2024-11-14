@@ -10,7 +10,6 @@ const DriveForm = () => {
 
 
   const { token } = location.state || {};
- console.log("hello from drive token",token)
   // Formik initialization
   const formik = useFormik({
     initialValues: {
@@ -28,20 +27,20 @@ const DriveForm = () => {
       const formData = new FormData();
     
       // Debugging uploaded file
-      console.log("Uploaded File: ", uploadedFile);
+      
       if (uploadedFile) {
         formData.append("file", uploadedFile); // Append the file to FormData
       } else {
         console.error("No file selected!");
       }
     
-      console.log("Formik Values: ", values);
+     
       formData.append("title", values.title);
       formData.append("description", values.description);
     
       // Format expiryDate to yyyy-mm-dd
       const formattedDate = new Date(values.expiry_date).toISOString().split('T')[0];
-      console.log("Formatted Expiry Date: ", formattedDate);
+     
       formData.append("expiry_date", formattedDate);
     
       const accessToken = token; // Use token from location state
@@ -51,15 +50,7 @@ const DriveForm = () => {
       }
     
       // Log the FormData contents correctly
-      console.log("FormData content:");
-      formData.forEach((value, key) => {
-        // Check if the value is a File or a String and log accordingly
-        if (value instanceof File) {
-          console.log(`${key}: File, name: ${value.name}, type: ${value.type}`);
-        } else {
-          console.log(`${key}: ${value}, type: ${typeof(value)}`);
-        }
-      });
+    
     
       try {
         const response = await axios.post('https://api.fastrakconnect.com/upload/', formData, {
