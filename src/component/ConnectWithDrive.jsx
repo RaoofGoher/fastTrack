@@ -14,12 +14,11 @@ const ConnectWithDriveCard = () => {
 
       <div className="p-4 bg-gray-100 text-center">
         {/* Redirect to OAuth page */}
-        <a
-          href="https://api.fastrakconnect.com/google-drive-oauth/?redirect_uri=https://api.fastrakconnect.com/oauth-callback"
-          className="flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        >
-          <FaGoogleDrive className="w-5 h-5 mr-2" /> Connect with Drive
-        </a>
+        <Link to="https://api.fastrakconnect.com/google-drive-oauth/?redirect_uri=https://api.fastrakconnect.com/oauth-callback">
+          <button className="flex items-center justify-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+            <FaGoogleDrive className="w-5 h-5 mr-2" /> Connect with Drive
+          </button>
+        </Link>
       </div>
     </div>
   );
