@@ -11,7 +11,7 @@ const PersonalInformationForm = () => {
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
-    phone: Yup.string().required("Phone number is required"),
+    // phone: Yup.string().required("Phone number is required"),
     street: Yup.string(),
     city: Yup.string(),
     state: Yup.string(),
@@ -88,7 +88,7 @@ const PersonalInformationForm = () => {
             {/* Phone Field */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700" htmlFor="phone">
-                Phone Number <span className="text-red-500">*</span>
+                Phone Number 
               </label>
               <div className="phone-input-container">
               <PhoneInput

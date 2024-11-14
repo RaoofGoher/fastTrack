@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
-
+import { useNavigate } from 'react-router-dom';
 const VideoIntro = () => {
   const [file, setFile] = useState(null);
-
+   const navigate = useNavigate();
   const validationSchema = Yup.object({
-    video: Yup.mixed()
-      .required('Please upload a video')
-      .test('fileType', 'Only video files are allowed', (value) =>
-        value && value.type.startsWith('video/')
-      ),
-    message: Yup.string(),
+    // video: Yup.mixed()
+    //   .required('Please upload a video')
+    //   .test('fileType', 'Only video files are allowed', (value) =>
+    //     value && value.type.startsWith('video/')
+    //   ),
+    // message: Yup.string(),
   });
 
   const handleFileChange = (e) => {
@@ -33,6 +33,8 @@ const VideoIntro = () => {
         onSubmit={(values) => {
           // Handle form submission
           console.log(values);
+          navigate("/attachements")
+
         }}
       >
         {({ setFieldValue, errors, touched }) => (

@@ -19,6 +19,7 @@ import VideoIntro from './component/careers/VideoIntro.jsx'
 import Attachements from './component/careers/Attachements.jsx'
 import Confirmation from './component/careers/Confirmation.jsx'
 import OAuthCallback from './component/OuthCallBack.jsx'
+import AdditionalInfo from './component/careers/AdditionalInfo.jsx'
 
 function App() {
     return (
@@ -41,6 +42,7 @@ function App() {
                     <Route path='/professionalexp' element={<ProfessionalExp />} />
                     <Route path='/skillassement' element={<SkillAssement />} />
                     <Route path='/education' element={<Education />} />
+                    <Route path='/additionalinfo' element={<AdditionalInfo />} />
                     <Route path='/videointro' element={<VideoIntro />} />
                     <Route path='/attachements' element={<Attachements />} />
                     <Route path='/confirmation' element={<Confirmation />} />

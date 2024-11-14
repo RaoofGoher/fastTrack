@@ -7,13 +7,13 @@ const ProfessionalExperienceForm = () => {
   // Validation schema
   const validationSchema = Yup.object({
     // recentJobTitle: Yup.string().required("Most recent job title is required"),
-    // recentCompany: Yup.string().required("Company name is required"),
-    // recentDuration: Yup.string().required("Duration is required"),
-    // recentResponsibilities: Yup.string().required("Responsibilities are required"),
-    // previousJobTitle: Yup.string(),
-    // previousCompany: Yup.string(),
-    // previousDuration: Yup.string(),
-    // previousResponsibilities: Yup.string(),
+    recentCompany: Yup.string().required("Company name is required"),
+    recentDuration: Yup.string().required("Duration is required"),
+    recentResponsibilities: Yup.string().required("Responsibilities are required"),
+    // previousJobTitle: Yup.string().required("Previous job title is required"),
+    previousCompany: Yup.string().required("Previous Company name is required"),
+    previousDuration: Yup.string().required("previous Duration is required"),
+    previousResponsibilities: Yup.string().required("previous job Responsibilities are required"),
   });
 
   // Initial values

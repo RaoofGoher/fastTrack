@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 const Confirmation = () => {
   const validationSchema = Yup.object({
     certification: Yup.boolean().oneOf([true], 'You must certify the information provided'),
-    date: Yup.date().required('Date is required').nullable(),
+    date: Yup.date().required('Date is required'),
   });
 
   return (
