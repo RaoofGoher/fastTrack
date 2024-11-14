@@ -6,8 +6,8 @@ const OAuthCallback = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get('token'); // Extract token from URL
-    console.log("hello", queryParams)
+    const token = queryParams.get('access_token'); // Extract token from URL
+    console.log("hello", queryParams,token)
     if (token) {
       // Store the token in localStorage or use other secure methods
       localStorage.setItem('driveToken', token);
