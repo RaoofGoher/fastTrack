@@ -26,21 +26,36 @@ const DriveForm = () => {
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append("file", uploadedFile); // Append the file to FormData
+    
+      // Debugging uploaded file
+      console.log("Uploaded File: ", uploadedFile);
+      if (uploadedFile) {
+        formData.append("file", uploadedFile); // Append the file to FormData
+      } else {
+        console.error("No file selected!");
+      }
+    
+      console.log("Formik Values: ", values);
       formData.append("title", values.title);
       formData.append("description", values.description);
     
       // Format expiryDate to yyyy-mm-dd
       const formattedDate = new Date(values.expiryDate).toISOString().split('T')[0];
+      console.log("Formatted Expiry Date: ", formattedDate);
       formData.append("expiryDate", formattedDate);
     
       const accessToken = token; // Use token from location state
-    
       if (!accessToken) {
         console.error("No access token found!");
         return;
       }
-    console.log("hello drive form data",formData);
+    
+      // Log the FormData contents
+      console.log("FormData content:");
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+    
       try {
         const response = await axios.post('https://api.fastrakconnect.com/upload/', formData, {
           headers: {
@@ -58,6 +73,7 @@ const DriveForm = () => {
         setFileError(error.response ? error.response.data.error : 'Upload failed');
       }
     },
+    
   });
 
   // Handle file selection
