@@ -53,7 +53,12 @@ const DriveForm = () => {
       // Log the FormData contents correctly
       console.log("FormData content:");
       formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
+        // Check if the value is a File or a String and log accordingly
+        if (value instanceof File) {
+          console.log(`${key}: File, name: ${value.name}, type: ${value.type}`);
+        } else {
+          console.log(`${key}: ${value}, type: ${typeof(value)}`);
+        }
       });
     
       try {
