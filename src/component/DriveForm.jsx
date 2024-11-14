@@ -29,33 +29,32 @@ const DriveForm = () => {
       formData.append("file", uploadedFile); // Append the file to FormData
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("expiryDate", values.expiryDate);
-
-      // Get the access token from local storage (or other global state)
-      const accessToken = token; // Adjust based on your app's state management
-
+    
+      // Format expiryDate to yyyy-mm-dd
+      const formattedDate = new Date(values.expiryDate).toISOString().split('T')[0];
+      formData.append("expiryDate", formattedDate);
+    
+      const accessToken = token; // Use token from location state
+    
       if (!accessToken) {
         console.error("No access token found!");
         return;
       }
-
+    
       try {
-        // Sending the request with the access token in the header
         const response = await axios.post('https://api.fastrakconnect.com/upload/', formData, {
           headers: {
-            'Authorization': `Bearer ${accessToken}`, // Send token in Authorization header
-            'Content-Type': 'multipart/form-data', // Specify that the request contains a file
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/form-data',
           },
         });
-
-        // Handle successful upload response
+    
         if (response.status === 201) {
           console.log('File uploaded successfully:', response.data);
-          // Optionally, handle any post-upload actions (like showing a success message)
+          // Handle success
         }
       } catch (error) {
         console.error('Error uploading file:', error);
-        // You can handle the error here, display a message, etc.
         setFileError(error.response ? error.response.data.error : 'Upload failed');
       }
     },
