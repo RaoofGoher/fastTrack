@@ -10,8 +10,8 @@ const SkillsAssessment = () => {
       .of(Yup.string())
       .min(1, "Please select at least one language")
       .required("This field is required"),
-    challengeDescription: Yup.string()
-      .required("Please describe a challenging customer service situation"),
+    // challengeDescription: Yup.string()
+    //   .required("Please describe a challenging customer service situation"),
   });
 
   // Initial values

@@ -19,6 +19,8 @@ import VideoIntro from './component/careers/VideoIntro.jsx'
 import Attachements from './component/careers/Attachements.jsx'
 import Confirmation from './component/careers/Confirmation.jsx'
 import OAuthCallback from './component/OuthCallBack.jsx'
+import AdditionalInfo from './component/careers/AdditionalInfo.jsx'
+import SignIn from './component/careers/SignIn.jsx'
 
 function App() {
     return (
@@ -36,15 +38,18 @@ function App() {
                     <Route path='/driveform' element={<DriveForm />} />
                     <Route path='/careers' element={<CareerPage />} />
                     <Route path='/uploaddocs' element={<UploadButton />} />
+                    <Route path="/oauth-callback" element={<OAuthCallback />} />
+
                     {/* Careers */}
                     <Route path='/positioninfo' element={<PositionInfo />} />
                     <Route path='/professionalexp' element={<ProfessionalExp />} />
                     <Route path='/skillassement' element={<SkillAssement />} />
                     <Route path='/education' element={<Education />} />
+                    <Route path='/additionalinfo' element={<AdditionalInfo />} />
                     <Route path='/videointro' element={<VideoIntro />} />
                     <Route path='/attachements' element={<Attachements />} />
                     <Route path='/confirmation' element={<Confirmation />} />
-                    <Route path="/oauth-callback" element={<OAuthCallback />} />
+                    <Route path='/signin' element={<SignIn />} />
                 
                     
                 </Route>

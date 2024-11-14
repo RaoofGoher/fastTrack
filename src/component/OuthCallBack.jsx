@@ -13,7 +13,7 @@ const OAuthCallback = () => {
       localStorage.setItem('driveToken', token);
 
       // Redirect to the upload page after successful token retrieval
-      navigate('/upload');  // Redirects to the Upload component
+      navigate('/uploaddocs');  // Redirects to the Upload component
     } else {
       console.error('Token not found');
     }

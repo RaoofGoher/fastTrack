@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const AdditionalInformation = () => {
   const navigate = useNavigate();
   const validationSchema = Yup.object({
-    fasTrakInterest: Yup.string().required('This field is required'),
-    strongFit: Yup.string().required('This field is required'),
-    eligibleToWork: Yup.string().required('This field is required'),
-    howDidYouHear: Yup.string().required('This field is required'),
+    // fasTrakInterest: Yup.string().required('This field is required'),
+    // strongFit: Yup.string().required('This field is required'),
+    // eligibleToWork: Yup.string().required('This field is required'),
+    // howDidYouHear: Yup.string().required('This field is required'),
   });
 
   return (
@@ -30,6 +30,7 @@ const AdditionalInformation = () => {
       >
         {({ errors, touched }) => (
           <Form className="space-y-4">
+             <h2 className="text-xl font-semibold text-gray-800 mb-4">Additional Info</h2>
             <div>
               <label className="block text-lg font-medium text-gray-700">
                 Why are you interested in joining FasTrak Connect?
