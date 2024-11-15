@@ -4,9 +4,15 @@ import * as Yup from "yup";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setApplicantId } from "../../services/career/PersonalInfo"; // Import the action
+import { useSubmitPersonalInfoMutation } from "../../services/career/PersonalInfoApi"; // Import the mutation hook
+
 
 const PersonalInformationForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [submitPersonalInfo] = useSubmitPersonalInfoMutation();
   // Form validation schema
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -32,9 +38,23 @@ const PersonalInformationForm = () => {
   };
 
   // Form submit handler
-  const handleSubmit = (values) => {
-    console.log("Form submitted:", values);
-    navigate('/positioninfo')
+  const handleSubmit = async (values) => {
+    // Combine address into a single string
+    const address = `${values.street}, ${values.city}, ${values.state} ${values.zip}`;
+
+    try {
+      const response = await submitPersonalInfo({
+        ...values,
+        address, // Include the combined address in the request body
+      }).unwrap(); // unwrap to access the result or catch errors
+
+      // Store the applicantId in the Redux store
+      dispatch(setApplicantId(response.applicantId));
+      console.log("hello",response)
+      navigate("/positioninfo"); // Redirect to the next page
+    } catch (error) {
+      console.error("Error submitting personal info:", error);
+    }
   };
 
   return (
