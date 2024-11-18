@@ -2,14 +2,20 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { usePostAdditionalInfoMutation } from '../../services/career/additionalInfo';
+import { useSelector } from "react-redux";
 
 const AdditionalInformation = () => {
   const navigate = useNavigate();
+  const applicantId = useSelector((state) => state.personalInfo.applicantId);
+
+  const [postAdditionalInfo, { isLoading, isError, isSuccess }] = usePostAdditionalInfoMutation();
+
   const validationSchema = Yup.object({
-    // fasTrakInterest: Yup.string().required('This field is required'),
-    // strongFit: Yup.string().required('This field is required'),
-    // eligibleToWork: Yup.string().required('This field is required'),
-    // howDidYouHear: Yup.string().required('This field is required'),
+    fasTrakInterest: Yup.string().required('This field is required'),
+    strongFit: Yup.string().required('This field is required'),
+    eligibleToWork: Yup.string().required('This field is required'),
+    howDidYouHear: Yup.string().required('This field is required'),
   });
 
   return (
@@ -22,15 +28,26 @@ const AdditionalInformation = () => {
           howDidYouHear: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          // Handle form submission
-          console.log(values);
-          navigate('/videoIntro');
+        onSubmit={async (values) => {
+          const payload = {
+            job_application: applicantId, // Replace with actual job application data
+            why_interested: values.fasTrakInterest,
+            strong_fit_reason: values.strongFit,
+            eligible_to_work: values.eligibleToWork === 'yes',
+            source_of_opportunity: values.howDidYouHear,
+          };
+
+          try {
+            await postAdditionalInfo(payload).unwrap();
+            navigate('/videoIntro');
+          } catch (error) {
+            console.error('Failed to submit additional info:', error);
+          }
         }}
       >
         {({ errors, touched }) => (
           <Form className="space-y-4">
-             <h2 className="text-xl font-semibold text-gray-800 mb-4">Additional Info</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Additional Info</h2>
             <div>
               <label className="block text-lg font-medium text-gray-700">
                 Why are you interested in joining FasTrak Connect?
@@ -47,7 +64,6 @@ const AdditionalInformation = () => {
                 </div>
               )}
             </div>
-
             <div>
               <label className="block text-lg font-medium text-gray-700">
                 What makes you a strong fit for this role?
@@ -64,7 +80,6 @@ const AdditionalInformation = () => {
                 </div>
               )}
             </div>
-
             <div>
               <span className="block text-lg font-medium text-gray-700">
                 Are you eligible to work in Rwanda?
@@ -95,7 +110,6 @@ const AdditionalInformation = () => {
                 </div>
               )}
             </div>
-
             <div>
               <span className="block text-lg font-medium text-gray-700">
                 How did you hear about this opportunity?
@@ -144,7 +158,6 @@ const AdditionalInformation = () => {
                 </div>
               )}
             </div>
-
             <div>
               <button
                 type="submit"

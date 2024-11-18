@@ -49,8 +49,8 @@ const PersonalInformationForm = () => {
       }).unwrap(); // unwrap to access the result or catch errors
 
       // Store the applicantId in the Redux store
-      dispatch(setApplicantId(response.applicantId));
-      console.log("hello",response)
+      dispatch(setApplicantId(response.applicant_id));
+      console.log("hello",response.applicant_id)
       navigate("/positioninfo"); // Redirect to the next page
     } catch (error) {
       console.error("Error submitting personal info:", error);

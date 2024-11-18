@@ -2,18 +2,24 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useAddExperienceMutation } from "../../services/career/experienceApi";
+
 const ProfessionalExperienceForm = () => {
   const navigate = useNavigate();
+  const applicantId = useSelector((state) => state.personalInfo.applicantId); // Redux selector for applicant ID
+  const [addExperience, { isLoading, isError, error }] = useAddExperienceMutation();
+
   // Validation schema
   const validationSchema = Yup.object({
-    // recentJobTitle: Yup.string().required("Most recent job title is required"),
+    recentJobTitle: Yup.string().required("Reacent Job title is required"),
     recentCompany: Yup.string().required("Company name is required"),
     recentDuration: Yup.string().required("Duration is required"),
     recentResponsibilities: Yup.string().required("Responsibilities are required"),
-    // previousJobTitle: Yup.string().required("Previous job title is required"),
+    previousJobTitle: Yup.string().required("Previous Job title is required"),
     previousCompany: Yup.string().required("Previous Company name is required"),
-    previousDuration: Yup.string().required("previous Duration is required"),
-    previousResponsibilities: Yup.string().required("previous job Responsibilities are required"),
+    previousDuration: Yup.string().required("Previous Duration is required"),
+    previousResponsibilities: Yup.string().required("Previous job Responsibilities are required"),
   });
 
   // Initial values
@@ -29,9 +35,32 @@ const ProfessionalExperienceForm = () => {
   };
 
   // Submit handler
-  const handleSubmit = (values) => {
-    console.log("Form submitted:", values);
-    navigate("/skillassement"); // Navigate to skills page
+  const handleSubmit = async (values) => {
+    const payload = [
+      {
+        job_application: applicantId,
+        job_title: values.recentJobTitle,
+        company: values.recentCompany,
+        duration_from: values.recentDuration.split(' – ')[0],  // Extracting start date
+        duration_to: values.recentDuration.split(' – ')[1],    // Extracting end date
+        key_responsibilities: values.recentResponsibilities,
+      },
+      {
+        job_application: applicantId,
+        job_title: values.previousJobTitle,
+        company: values.previousCompany,
+        duration_from: values.previousDuration.split(' – ')[0],  // Extracting start date
+        duration_to: values.previousDuration.split(' – ')[1],    // Extracting end date
+        key_responsibilities: values.previousResponsibilities,
+      }
+    ];
+
+    try {
+      await addExperience(payload).unwrap();
+      navigate("/skillassement"); // Navigate to the skill assessment page after successful submission
+    } catch (err) {
+      console.error("Error submitting experience:", err);
+    }
   };
 
   return (
@@ -47,7 +76,19 @@ const ProfessionalExperienceForm = () => {
             {/* Most Recent Job */}
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Most Recent Job Title:</h3>
             <div className="grid grid-cols-3 gap-4 mb-4">
-              {/* Company */}
+            <div>
+                <Field
+                  type="text"
+                  name="recentJobTitle"
+                  placeholder="Title"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ErrorMessage
+                  name="recentJobTitle"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
               <div>
                 <Field
                   type="text"
@@ -62,12 +103,11 @@ const ProfessionalExperienceForm = () => {
                 />
               </div>
 
-              {/* Duration */}
               <div>
                 <Field
                   type="text"
                   name="recentDuration"
-                  placeholder="Duration (MM/YYYY – MM/YYYY)"
+                  placeholder="Duration (YYYY-MM-DD)"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
@@ -77,7 +117,6 @@ const ProfessionalExperienceForm = () => {
                 />
               </div>
 
-              {/* Responsibilities */}
               <div>
                 <Field
                   type="text"
@@ -96,7 +135,19 @@ const ProfessionalExperienceForm = () => {
             {/* Previous Job */}
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Previous Job Title:</h3>
             <div className="grid grid-cols-3 gap-4 mb-4">
-              {/* Company */}
+            <div>
+                <Field
+                  type="text"
+                  name="previousJobTitle"
+                  placeholder="Title"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ErrorMessage
+                  name="previousJobTitle"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
               <div>
                 <Field
                   type="text"
@@ -111,12 +162,11 @@ const ProfessionalExperienceForm = () => {
                 />
               </div>
 
-              {/* Duration */}
               <div>
                 <Field
                   type="text"
                   name="previousDuration"
-                  placeholder="Duration (MM/YYYY – MM/YYYY)"
+                  placeholder="Duration (YYYY-MM-DD)"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
@@ -126,7 +176,6 @@ const ProfessionalExperienceForm = () => {
                 />
               </div>
 
-              {/* Responsibilities */}
               <div>
                 <Field
                   type="text"
@@ -146,9 +195,11 @@ const ProfessionalExperienceForm = () => {
             <button
               type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+              disabled={isLoading}
             >
-              Next
+              {isLoading ? 'Submitting...' : 'Next'}
             </button>
+            {isError && <div className="text-red-500 mt-2">Error: {error.message}</div>}
           </Form>
         )}
       </Formik>
