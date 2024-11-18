@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from 'react-redux';
+import { useSubmitPositionInformationMutation } from '../../services/career/positionInfoApi';
 const PositionInformationForm = () => {
   const [employmentType, setEmploymentType] = useState(""); // State to track employment type
   const navigate = useNavigate();
 
+  const applicantId = useSelector((state) => state.personalInfo.applicantId);
+  console.log("here is applicant id",applicantId)
+
+  const [submitPositionInformation] = useSubmitPositionInformationMutation();
   // Validation schema
   const validationSchema = Yup.object({
     position_applied_for: Yup.string().required("Position is required"),
     employment_type: Yup.string()
       .required("Employment type is required")
-      .oneOf(["Full-Time", "Part-Time"], "Select a valid employment type"),
+      .oneOf(["Full Time", "Part Time"], "Select a valid employment type"),
       preferred_shift: Yup.string()
       .nullable()
       .test("shift-required", "Shift is required", function (value) {
         const { employment_type } = this.parent;
-        if (employment_type === "Full-Time" || employment_type === "Part-Time") {
+        if (employment_type === "Full Time" || employment_type === "Part Time") {
           return !!value; // Check if value is provided
         }
         return true; // No validation if employment_type is not Full-Time/Part-Time
@@ -36,10 +41,19 @@ const PositionInformationForm = () => {
   };
 
   // Submit handler
-  const handleSubmit = (values) => {
-    console.log("Form submitted:", values);
-    navigate("/professionalexp");
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const payload = { ...values, job_application: applicantId }; // Add applicantId to payload
+      await submitPositionInformation(payload).unwrap();
+      console.log('Form submitted successfully:', payload);
+      navigate('/professionalexp');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setSubmitting(false);
+    }
   };
+
 
   // Handle employment type change
   const handleEmploymentTypeChange = (event, setFieldValue) => {
@@ -97,8 +111,8 @@ const PositionInformationForm = () => {
                 onChange={(e) => handleEmploymentTypeChange(e, setFieldValue)}
               >
                 <option value="">Select Employment Type</option>
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
+                <option value="Full Time">Full-Time</option>
+                <option value="Part Time">Part-Time</option>
               </Field>
               <ErrorMessage
                 name="employment_type"
@@ -108,7 +122,7 @@ const PositionInformationForm = () => {
             </div>
 
             {/* Dynamic Shift Dropdown */}
-            {employmentType === "Full-Time" && (
+            {employmentType === "Full Time" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700" htmlFor="preferred_shift">
                   For Full-Time Applicants <span className="text-red-500">*</span>
@@ -120,8 +134,8 @@ const PositionInformationForm = () => {
                   className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Shift</option>
-                  <option value="Night Shift">Night Shift</option>
-                  <option value="Day Shift">Day Shift</option>
+                  <option value="Night">Night Shift</option>
+                  <option value="Day">Day Shift</option>
                 </Field>
                 <ErrorMessage
                   name="preferred_shift"
@@ -131,7 +145,7 @@ const PositionInformationForm = () => {
               </div>
             )}
 
-            {employmentType === "Part-Time" && (
+            {employmentType === "Part Time" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700" htmlFor="preferred_shift">
                   For Part-Time Applicants <span className="text-red-500">*</span>
@@ -143,10 +157,10 @@ const PositionInformationForm = () => {
                   className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Shift</option>
-                  <option value="6:00 AM - 12:00 Noon">6:00 AM - 12:00 Noon</option>
-                  <option value="12:00 Noon - 6:00 PM">12:00 Noon - 6:00 PM</option>
-                  <option value="6:00 PM - Midnight">6:00 PM - Midnight</option>
-                  <option value="Midnight - 6:00 AM">Midnight - 6:00 AM</option>
+                  <option value="6am - 12pm">6:00 AM - 12:00 Noon</option>
+                  <option value="12pm - 6pm">12:00 Noon - 6:00 PM</option>
+                  <option value="6pm - 12pm">6:00 PM - Midnight</option>
+                  
                 </Field>
                 <ErrorMessage
                   name="preferred_shift"

@@ -4,8 +4,9 @@ import { clientApi } from './services/clientApi';
 import { orderApi } from './services/orderApi';
 import { fastrakApi } from './services/fastrackApi';
 import { uploadApi } from './services/uploadApi';
-import { personalInfoApi } from './services/career/PersonalInfoApi'; // Import the new API
-import personalInfoReducer from './services/career/PersonalInfo'; // Import the slice reducer
+import { personalInfoApi } from './services/career/PersonalInfoApi'; 
+import personalInfoReducer from './services/career/PersonalInfo';  // Directly import the reducer
+import positionInformationApi from './services/career/positionInfoApi';
 
 const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ const store = configureStore({
     [fastrakApi.reducerPath]: fastrakApi.reducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [personalInfoApi.reducerPath]: personalInfoApi.reducer,
-    personalInfo: personalInfoReducer, // Add personalInfo reducer
+    [positionInformationApi.reducerPath]: positionInformationApi.reducer,
+    personalInfo: personalInfoReducer,  // Pass the reducer directly
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -22,7 +24,8 @@ const store = configureStore({
       .concat(orderApi.middleware)
       .concat(fastrakApi.middleware)
       .concat(uploadApi.middleware)
-      .concat(personalInfoApi.middleware),
+      .concat(personalInfoApi.middleware)
+      .concat(positionInformationApi.middleware),
 });
 
 export default store;

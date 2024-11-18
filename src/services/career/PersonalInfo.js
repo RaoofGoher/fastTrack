@@ -5,7 +5,7 @@ const initialState = {
   applicantId: null, // Store the applicantId
 };
 
-const personalInfoSlice = createSlice({
+const personalInfo = createSlice({
   name: 'personalInfo',
   initialState,
   reducers: {
@@ -15,5 +15,5 @@ const personalInfoSlice = createSlice({
   },
 });
 
-export const { setApplicantId } = personalInfoSlice.actions;
-export default personalInfoSlice.reducer;
+export const { setApplicantId } = personalInfo.actions;
+export default personalInfo.reducer;
