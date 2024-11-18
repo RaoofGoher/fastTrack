@@ -5,6 +5,7 @@ export const  skillAssementApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.fastrakconnect.com/', // Base URL for API
   }),
+  
   endpoints: (builder) => ({
     submitSkillsAssessment: builder.mutation({
       query: (data) => ({

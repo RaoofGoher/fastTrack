@@ -44,7 +44,8 @@ const SkillsAssessment = () => {
     };
 
     try {
-      await submitSkillsAssessment(payload).unwrap();
+     const response = await submitSkillsAssessment(payload).unwrap();
+     console.log("skill assement response",response)
       navigate("/education"); // Redirect on success
     } catch (err) {
       console.error("Submission failed: ", err);

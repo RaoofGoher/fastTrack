@@ -9,6 +9,8 @@ import personalInfoReducer from './services/career/PersonalInfo';  // Directly i
 import positionInformationApi from './services/career/positionInfoApi';
 import { experienceApiSlice } from './services/career/experienceApi';
 import { skillAssementApi } from './services/career/skillAssessmentApi';
+import { educationApiSlice } from './services/career/educationApi'; 
+import { additionalInfoApi } from './services/career/additionalInfo'; 
 
 const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ const store = configureStore({
     [positionInformationApi.reducerPath]: positionInformationApi.reducer,
     [experienceApiSlice.reducerPath]: experienceApiSlice.reducer,
     [skillAssementApi.reducerPath]: skillAssementApi.reducer,
+    [educationApiSlice.reducerPath]: educationApiSlice.reducer,
+    [additionalInfoApi.reducerPath]: additionalInfoApi.reducer,
     personalInfo: personalInfoReducer,  // Pass the reducer directly
   },
   middleware: (getDefaultMiddleware) =>
@@ -31,7 +35,9 @@ const store = configureStore({
       .concat(personalInfoApi.middleware)
       .concat(positionInformationApi.middleware)
       .concat(experienceApiSlice.middleware)
-      .concat(skillAssementApi.middleware),
+      .concat(skillAssementApi.middleware)
+      .concat(educationApiSlice.middleware)
+      .concat(additionalInfoApi.middleware),
 });
 
 export default store;

@@ -159,7 +159,7 @@ const PositionInformationForm = () => {
                   <option value="">Select Shift</option>
                   <option value="6am - 12pm">6:00 AM - 12:00 Noon</option>
                   <option value="12pm - 6pm">12:00 Noon - 6:00 PM</option>
-                  <option value="6pm - 12pm">6:00 PM - Midnight</option>
+                  <option value="6pm - 12am">6:00 PM - Midnight</option>
                   
                 </Field>
                 <ErrorMessage
