@@ -15,6 +15,7 @@ import addMediaReducer  from './services/career/addMediaSlice';
 import {mediaApi} from './services/career/mediaApi'
 import authReducer from './services/career/authSlice'
 import { apiSlice } from './services/career/loginApi';
+import { applicationsApi } from './services/career/getAllApplicantSlice';
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     [skillAssementApi.reducerPath]: skillAssementApi.reducer,
     [educationApiSlice.reducerPath]: educationApiSlice.reducer,
     [additionalInfoApi.reducerPath]: additionalInfoApi.reducer,
+    [applicationsApi.reducerPath]: applicationsApi.reducer,
     [mediaApi.reducerPath]: mediaApi.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     media: addMediaReducer,
@@ -47,7 +49,8 @@ const store = configureStore({
       .concat(educationApiSlice.middleware)
       .concat(additionalInfoApi.middleware)
       .concat(mediaApi.middleware)
-      .concat(apiSlice.middleware),
+      .concat(apiSlice.middleware)
+      .concat(applicationsApi.middleware),
 });
 
 export default store;

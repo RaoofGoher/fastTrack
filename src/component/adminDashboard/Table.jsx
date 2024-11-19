@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTable } from 'react-table';
+import { useFetchApplicationsQuery } from '../../services/career/getAllApplicantSlice';
 
 const Table = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://api.fastrakconnect.com/application/get/all/1'); // Replace with your API endpoint
-        const result = await response.json();
-        setData(Array.isArray(result) ? result : result.data || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data: applications = [], error, isLoading } = useFetchApplicationsQuery();
 
   const columns = React.useMemo(
     () => [
@@ -23,9 +11,17 @@ const Table = () => {
       { Header: 'Email', accessor: 'email' },
       { Header: 'Phone', accessor: 'phone' },
       { Header: 'Address', accessor: 'address' },
-      { Header: 'Position', accessor: 'software Engineer' },
-      { Header: 'Applied Date', accessor: '2024-11-16' },
-      { Header: 'View More', accessor: 'view More' },
+      { Header: 'Position', accessor: 'position_applied_for' },
+      { Header: 'Applied Date', accessor: 'applied_date' },
+      {
+        Header: 'View More',
+        accessor: 'view_more',
+        Cell: ({ row }) => (
+          <button className="text-blue-500 hover:underline" onClick={() => handleViewMore(row.original)}>
+            View More
+          </button>
+        ),
+      },
     ],
     []
   );
@@ -38,12 +34,19 @@ const Table = () => {
     prepareRow,
   } = useTable({
     columns,
-    data,
+    data: applications,
   });
+
+  const handleViewMore = (application) => {
+    console.log('Application details:', application);
+    // Add your logic to show more details
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching applications.</div>;
 
   return (
     <div className="p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg">
-      {/* Responsive table container */}
       <div className="overflow-x-auto">
         <table
           {...getTableProps()}
