@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
 import PrimaryLayout from './layouts/PrimaryLayout.jsx';
 import AdminLayout from './layouts/AdminLayout.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -23,6 +23,7 @@ import Confirmation from './component/careers/Confirmation.jsx'
 import OAuthCallback from './component/OuthCallBack.jsx'
 import AdditionalInfo from './component/careers/AdditionalInfo.jsx'
 import SignIn from './component/careers/SignIn.jsx'
+import ProtectedRoute from './component/careers/ProtectedRoute.jsx'
 
 function App() {
     return (
@@ -30,7 +31,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<PrimaryLayout />}>
                     <Route index element={<HomePage />} />
-                    
+
                     <Route path='/salesorder' element={<SalesOrder />} />
                     <Route path='/serviceselection' element={<ServicesSelection />} />
                     <Route path='/billandpayment' element={<BillAndPayment />} />
@@ -52,13 +53,21 @@ function App() {
                     <Route path='/attachements' element={<Attachements />} />
                     <Route path='/confirmation' element={<Confirmation />} />
                     <Route path='/signin' element={<SignIn />} />
-                
-                    
+
+
                 </Route>
 
-                <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<AdminPage />} />       
+                <Route
+                    path="/admin/*"
+                    element={
+                        <ProtectedRoute roles={['admin']}>
+                            <AdminLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route index element={<AdminPage />} />
                 </Route>
+                <Route path="*" element={<Navigate to="/signin" />} />
             </Routes>
         </Router>
     );
