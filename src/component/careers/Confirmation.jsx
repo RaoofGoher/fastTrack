@@ -19,6 +19,7 @@ const Confirmation = () => {
         onSubmit={(values) => {
           // Handle form submission
           console.log(values);
+          alert ("Thank You for submitting")
         }}
       >
         {({ errors, touched }) => (
