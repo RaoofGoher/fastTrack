@@ -1,23 +1,34 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight, FaTachometerAlt, FaUsers, FaCog, FaSignOutAlt,FaPowerOff } from "react-icons/fa";
-import Header from '../component/Header';
-import Footer from '../component/Footer';
+import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../services/career/authSlice"; // Adjust path to your authSlice
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaTachometerAlt,
+  FaUsers,
+  FaCog,
+  FaSignOutAlt,
+  FaPowerOff,
+} from "react-icons/fa";
+import Header from "../component/Header";
+import Footer from "../component/Footer";
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Toggle sidebar open/close
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
   };
 
-  // Sign out function (you can replace this with your sign-out logic, e.g., clearing authentication token)
+  // Sign out function
   const handleSignOut = () => {
-    // Sign out logic, for example:
-    // localStorage.removeItem("authToken");
-    // window.location.href = "/login"; // Redirect to login page
-    console.log("User signed out");
+    dispatch(logout()); // Clear Redux state
+    localStorage.removeItem("authToken"); // Clear token (if stored locally)
+    navigate("/signin"); // Redirect to login page
   };
 
   return (
@@ -69,16 +80,17 @@ const AdminLayout = () => {
           <div className="mt-auto p-4">
             <button
               onClick={handleSignOut}
-              className={`flex items-center ml-[-10px] ${isSidebarOpen ? "px-5" : "px-1"} py-2 bg-orange-500 text-white hover:bg-red-600 hover:text-white transition rounded`}
+              className={`flex items-center ml-[-10px] ${
+                isSidebarOpen ? "px-5" : "px-1"
+              } py-2 bg-orange-500 text-white hover:bg-red-600 hover:text-white transition rounded`}
             >
-              {/* Only show the full button when the sidebar is open */}
               {isSidebarOpen ? (
                 <>
                   <FaSignOutAlt className="mr-4" />
                   <span>Sign Out</span>
                 </>
               ) : (
-                <FaPowerOff className="ml-2 mr-2 text-white" size={18}  />
+                <FaPowerOff className="ml-2 mr-2 text-white" size={18} />
               )}
             </button>
           </div>
@@ -91,7 +103,7 @@ const AdminLayout = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 bg-gray-100 p-6">
+        <div className="flex-1 bg-gray-100 overflow-auto">
           <Outlet />
         </div>
       </div>
