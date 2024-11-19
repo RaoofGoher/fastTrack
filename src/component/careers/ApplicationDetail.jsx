@@ -7,14 +7,16 @@ const ApplicationDetail = () => {
   const { data: applications = [], error, isLoading } = useFetchApplicationsQuery();
   
   const [application, setApplication] = useState(null);
-
-  useEffect(() => {
-    // Find the application with the matching ID from the fetched data
+console.log("h1",applications)
+useEffect(() => {
     if (applications.length) {
-      const app = applications.find((app) => app.id === id);
+      console.log("applications", applications);
+      // Compare as numbers (or strings) based on your preference
+      const app = applications.find((app) => app.applicant_id === parseInt(id, 10));
       setApplication(app);
     }
   }, [id, applications]);
+  
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching application details.</div>;
