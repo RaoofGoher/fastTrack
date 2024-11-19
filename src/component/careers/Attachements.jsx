@@ -26,11 +26,11 @@ const Attachments = () => {
       .test('fileType', 'Only PDF files are allowed', (value) =>
         value && value.type === 'application/pdf'
       ),
-    coverLetter: Yup.mixed()
-      .required('Cover Letter is required')
-      .test('fileType', 'Only PDF files are allowed', (value) =>
-        value && value.type === 'application/pdf'
-      ),
+    // coverLetter: Yup.mixed()
+    //   .required('Cover Letter is required')
+    //   .test('fileType', 'Only PDF files are allowed', (value) =>
+    //     value && value.type === 'application/pdf'
+    //   ),
   });
 
   const handleFileChange = (e, setFieldValue, field) => {
@@ -55,7 +55,7 @@ const Attachments = () => {
 
     // Dispatch the uploadMedia action with formData
     try {
-      await addMedia(formData).unwrap(); // Assume this is your RTK Query mutation
+     const response = await addMedia(formData).unwrap(); // Assume this is your RTK Query mutation
       console.log('Upload Response:', response);
       navigate('/confirmation');
     } catch (error) {
