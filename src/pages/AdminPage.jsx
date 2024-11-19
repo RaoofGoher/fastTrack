@@ -1,9 +1,10 @@
 import React from 'react'
+import Table from "../component/adminDashboard/Table"
 
 const AdminPage = () => {
   return (
-    <div>
-      <h1>Admin Page</h1> 
+    <div className='contanier mx-auto'>
+     <Table/>
     </div>
   )
 }
