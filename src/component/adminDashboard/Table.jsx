@@ -47,7 +47,7 @@ const Table = () => {
 
   return (
     <div className="p-4 md:p-8 bg-gray-100 rounded-lg shadow-lg">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-auto max-h-96">
         <table
           {...getTableProps()}
           className="min-w-full table-auto bg-white rounded-lg shadow"
