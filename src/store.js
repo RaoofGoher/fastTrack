@@ -4,13 +4,16 @@ import { clientApi } from './services/clientApi';
 import { orderApi } from './services/orderApi';
 import { fastrakApi } from './services/fastrackApi';
 import { uploadApi } from './services/uploadApi';
-import { personalInfoApi } from './services/career/PersonalInfoApi'; 
+import { personalInfoApi } from './services/career/PersonalInfoApi';
 import personalInfoReducer from './services/career/PersonalInfo';  // Directly import the reducer
 import positionInformationApi from './services/career/positionInfoApi';
 import { experienceApiSlice } from './services/career/experienceApi';
 import { skillAssementApi } from './services/career/skillAssessmentApi';
-import { educationApiSlice } from './services/career/educationApi'; 
-import { additionalInfoApi } from './services/career/additionalInfo'; 
+import { educationApiSlice } from './services/career/educationApi';
+import { additionalInfoApi } from './services/career/additionalInfo';
+import addMediaReducer  from './services/career/addMediaSlice';
+import {mediaApi} from './services/career/mediaApi'
+
 
 const store = configureStore({
   reducer: {
@@ -24,6 +27,8 @@ const store = configureStore({
     [skillAssementApi.reducerPath]: skillAssementApi.reducer,
     [educationApiSlice.reducerPath]: educationApiSlice.reducer,
     [additionalInfoApi.reducerPath]: additionalInfoApi.reducer,
+    [mediaApi.reducerPath]: mediaApi.reducer,
+    media: addMediaReducer,
     personalInfo: personalInfoReducer,  // Pass the reducer directly
   },
   middleware: (getDefaultMiddleware) =>
@@ -37,7 +42,8 @@ const store = configureStore({
       .concat(experienceApiSlice.middleware)
       .concat(skillAssementApi.middleware)
       .concat(educationApiSlice.middleware)
-      .concat(additionalInfoApi.middleware),
+      .concat(additionalInfoApi.middleware)
+      .concat(mediaApi.middleware),
 });
 
 export default store;

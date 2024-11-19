@@ -3,19 +3,34 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useUploadMediaMutation } from '../../services/career/mediaApi'; // Adjust this import based on your file structure
+import { useVideoContext } from '../../context/VideoContext';
 const Attachments = () => {
   const [resume, setResume] = useState(null);
   const [coverLetter, setCoverLetter] = useState(null);
- const navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [addMedia, { isLoading, isError, error }] = useUploadMediaMutation();
+  
+  const {
+    video
+  } = useVideoContext();
+  // Assuming applicantId and video are in the store (e.g., in the user slice)
+  const applicantId = useSelector((state) => state.personalInfo.applicantId);
+  
+
   const validationSchema = Yup.object({
     resume: Yup.mixed()
       .required('Resume is required')
       .test('fileType', 'Only PDF files are allowed', (value) =>
         value && value.type === 'application/pdf'
       ),
-    // coverLetter: Yup.mixed().test('fileType', 'Only PDF files are allowed', (value) =>
-    //   !value || value.type === 'application/pdf'
-    // ),
+    coverLetter: Yup.mixed()
+      .required('Cover Letter is required')
+      .test('fileType', 'Only PDF files are allowed', (value) =>
+        value && value.type === 'application/pdf'
+      ),
   });
 
   const handleFileChange = (e, setFieldValue, field) => {
@@ -30,6 +45,24 @@ const Attachments = () => {
     }
   };
 
+  const handleSubmit = async (values) => {
+    // Create form data to send with the POST request
+    const formData = new FormData();
+    formData.append('resume', resume);
+    formData.append('coverLetter', coverLetter);
+    formData.append('job_application', applicantId); // Adding applicantId to the payload
+    formData.append('video', video); // Adding video from store to the payload
+
+    // Dispatch the uploadMedia action with formData
+    try {
+      await addMedia(formData).unwrap(); // Assume this is your RTK Query mutation
+      console.log('Upload Response:', response);
+      navigate('/confirmation');
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <Formik
@@ -38,11 +71,7 @@ const Attachments = () => {
           coverLetter: null,
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          // Handle form submission
-          console.log('Form values:', values);
-          navigate('/confirmation'); // Redirect to next step
-        }}
+        onSubmit={handleSubmit}
       >
         {({ setFieldValue, errors, touched }) => (
           <Form className="space-y-4">
