@@ -1,9 +1,11 @@
 import React from 'react';
 import { useTable } from 'react-table';
 import { useFetchApplicationsQuery } from '../../services/career/getAllApplicantSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Table = () => {
   const { data: applications = [], error, isLoading } = useFetchApplicationsQuery();
+  const navigate = useNavigate(); // Use React Router's useNavigate hook
 
   const columns = React.useMemo(
     () => [
@@ -17,7 +19,10 @@ const Table = () => {
         Header: 'View More',
         accessor: 'view_more',
         Cell: ({ row }) => (
-          <button className="text-blue-500 hover:underline" onClick={() => handleViewMore(row.original)}>
+          <button
+            className="text-blue-500 hover:underline"
+            onClick={() => handleViewMore(row.original)}
+          >
             View More
           </button>
         ),
@@ -38,8 +43,10 @@ const Table = () => {
   });
 
   const handleViewMore = (application) => {
-    console.log('Application details:', application);
-    // Add your logic to show more details
+    // Navigate to the new page, passing the application ID as a parameter
+    console.log(`Navigating to /admin/application/${application.id}`);
+    navigate(`admin/application/${application.applicant_id
+    }`);
   };
 
   if (isLoading) return <div>Loading...</div>;

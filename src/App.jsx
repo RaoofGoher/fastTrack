@@ -24,6 +24,7 @@ import OAuthCallback from './component/OuthCallBack.jsx'
 import AdditionalInfo from './component/careers/AdditionalInfo.jsx'
 import SignIn from './component/careers/SignIn.jsx'
 import ProtectedRoute from './component/careers/ProtectedRoute.jsx'
+import ApplicationDetail from './component/careers/ApplicationDetail.jsx';
 
 function App() {
     return (
@@ -58,7 +59,7 @@ function App() {
                 </Route>
 
                 <Route
-                    path="/admin/*"
+                    path="/admin"
                     element={
                         <ProtectedRoute roles={['admin']}>
                             <AdminLayout />
@@ -66,6 +67,7 @@ function App() {
                     }
                 >
                     <Route index element={<AdminPage />} />
+                    <Route path="admin/application/:id" element={<ApplicationDetail />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/signin" />} />
             </Routes>
