@@ -95,7 +95,7 @@ const ApplicationDetail = () => {
     <strong>Video:</strong>{' '}
     {application.media_uploads.video ? (
       <a
-        href={application.media_uploads.video}
+        href={application.media_uploads?.video}
         download
         className="text-blue-600 underline"
       >
@@ -109,7 +109,7 @@ const ApplicationDetail = () => {
     <strong>Resume:</strong>{' '}
     {application.media_uploads.resume ? (
       <a
-        href={application.media_uploads.resume}
+        href={application.media_uploads?.resume}
         download
         className="text-blue-600 underline"
       >
@@ -123,7 +123,7 @@ const ApplicationDetail = () => {
     <strong>Cover Letter:</strong>{' '}
     {application.media_uploads.cover_letter ? (
       <a
-        href={application.media_uploads.cover_letter}
+        href={application.media_uploads?.cover_letter}
         download
         className="text-blue-600 underline"
       >
