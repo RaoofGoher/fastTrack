@@ -25,6 +25,7 @@ import AdditionalInfo from './component/careers/AdditionalInfo.jsx'
 import SignIn from './component/careers/SignIn.jsx'
 import ProtectedRoute from './component/careers/ProtectedRoute.jsx'
 import ApplicationDetail from './component/careers/ApplicationDetail.jsx';
+import UnderConstruction from './component/adminDashboard/UnderConstruction.jsx';
 
 function App() {
     return (
@@ -68,6 +69,7 @@ function App() {
                 >
                     <Route index element={<AdminPage />} />
                     <Route path="admin/application/:id" element={<ApplicationDetail />} />
+                    <Route path="admin/underconstruction" element={<UnderConstruction/>}/>
                 </Route>
                 <Route path="*" element={<Navigate to="/signin" />} />
             </Routes>

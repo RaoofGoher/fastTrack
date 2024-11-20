@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../services/career/authSlice"; // Adjust path to your authSlice
 import {
@@ -62,18 +62,24 @@ const AdminLayout = () => {
           </div>
 
           <ul className="mt-4 space-y-2 flex-grow">
+            <Link to="/admin">
             <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
               <FaTachometerAlt className="mr-4" />
               {isSidebarOpen && <span>Dashboard</span>}
             </li>
+            </Link>
+            <Link to="admin/underconstruction">
             <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
               <FaUsers className="mr-4" />
               {isSidebarOpen && <span>Users</span>}
             </li>
+            </Link>
+            <Link  to="admin/underconstruction">
             <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
               <FaCog className="mr-4" />
               {isSidebarOpen && <span>Settings</span>}
             </li>
+            </Link>
           </ul>
 
           {/* Sign out button */}

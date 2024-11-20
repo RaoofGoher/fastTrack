@@ -1,12 +1,12 @@
-import React from 'react'
-import Table from "../component/adminDashboard/Table"
+import React from "react";
+import Table from "../component/adminDashboard/Table";
 
 const AdminPage = () => {
   return (
-    
-     <Table/>
-    
-  )
-}
+    <>
+      <Table />
+    </>
+  );
+};
 
-export default AdminPage
+export default AdminPage;
