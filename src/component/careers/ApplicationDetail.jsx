@@ -101,7 +101,7 @@ const ApplicationDetail = () => {
         download
         className="text-blue-600 underline"
       >
-        Download Video
+        View Video
       </a>
     ) : (
       'No video uploaded.'
@@ -115,7 +115,7 @@ const ApplicationDetail = () => {
         download
         className="text-blue-600 underline"
       >
-        Download Resume
+        View Resume
       </a>
     ) : (
       'No resume uploaded.'
@@ -129,7 +129,7 @@ const ApplicationDetail = () => {
         download
         className="text-blue-600 underline"
       >
-        Download Cover Letter
+        View Cover Letter
       </a>
     ) : (
       'No cover letter uploaded.'
