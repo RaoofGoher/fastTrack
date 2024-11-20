@@ -11,7 +11,31 @@ const SkillsAssessment = () => {
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [submitSkillsAssessment, { isLoading, isSuccess, isError, error }] =
     useSubmitSkillsAssessmentMutation();
- console.log("position applied for",positionAppliedFor)
+  console.log("position applied for", positionAppliedFor)
+
+  const roleBasedQuestions = {
+    "Customer Service Representative": [
+      "Describe a challenging customer service situation and how you resolved it?",
+      "How do you handle difficult customers?",
+      "What strategies do you use to ensure customer satisfaction?",
+      "Can you provide an example of a time you went above and beyond for a customer?"
+    ],
+    "Sales Representative": [
+      "Describe your experience with meeting sales targets.",
+      "What techniques do you use to build and maintain client relationships?",
+      "How do you handle objections during a sales pitch?",
+      "Share an example of a successful sales strategy you implemented."
+    ],
+    "Technical Support": [
+      "Describe your experience with troubleshooting software or hardware issues.",
+      "Write your technical skills.",
+      "List any technical certifications.",
+      "How do you stay updated on the latest technology trends?"
+    ]
+  };
+
+
+
   // Validation schema
   const validationSchema = Yup.object({
     languages: Yup.array()
@@ -39,14 +63,14 @@ const SkillsAssessment = () => {
     const payload = {
       job_application: applicantId, // Adjust this field based on your application flow
       languages: values.languages.join(","),
-      tech_skills:values.tech_skills,
+      tech_skills: values.tech_skills,
       certificates: values.technicalCertifications,
       tech_experience_description: `${values.challengeDescription}\n${values.troubleshootingExperience}`,
     };
 
     try {
-     const response = await submitSkillsAssessment(payload).unwrap();
-     console.log("skill assement response",response)
+      const response = await submitSkillsAssessment(payload).unwrap();
+      console.log("skill assement response", response)
       navigate("/education"); // Redirect on success
     } catch (err) {
       console.error("Submission failed: ", err);
@@ -121,14 +145,15 @@ const SkillsAssessment = () => {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-{/* questions */}
+            {/* questions */}
             {/* Customer Service Challenge */}
             <div className="mb-6">
               <label
                 htmlFor="challengeDescription"
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
-                Describe a challenging customer service situation and how you resolved it
+               
+                {positionAppliedFor === "Customer Service Representative" && "Describe a challenging customer service situation and how you resolved it?"}
               </label>
               <Field
                 as="textarea"
@@ -144,27 +169,27 @@ const SkillsAssessment = () => {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Tech Skills</h3>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">{positionAppliedFor === "Customer Service Representative" && "How do you handle difficult customers?"}</h3>
             <div>
-                <Field
-                  type="text"
-                  name="tech_skills"
-                  placeholder="Title"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <ErrorMessage
-                  name="tech_skills"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
+              <Field
+                type="text"
+                name="tech_skills"
+                placeholder="Title"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <ErrorMessage
+                name="tech_skills"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
             {/* Troubleshooting Experience */}
             <div className="mb-6">
               <label
                 htmlFor="troubleshootingExperience"
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
-                Describe your experience with troubleshooting software or hardware issues
+               {positionAppliedFor === "Customer Service Representative" && "What strategies do you use to ensure customer satisfaction?"}
               </label>
               <Field
                 as="textarea"
@@ -187,7 +212,7 @@ const SkillsAssessment = () => {
                 htmlFor="technicalCertifications"
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
-                List any technical certifications
+                {positionAppliedFor === "Customer Service Representative" && "Can you provide an example of a time you went above and beyond for a customer?"}
               </label>
               <Field
                 as="textarea"
