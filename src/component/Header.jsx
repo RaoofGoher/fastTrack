@@ -13,7 +13,7 @@ const Header = () => {
             {/* Logo Section */}
             <Link to={"/"}>
             <div className="flex items-center space-x-2">
-                <div>
+                <div className='flex flex-col items-center justify-center'>
                     <h1 className="text-xl font-bold">FASTRAK CONNECT</h1>
                     <p className="text-sm text-gray-600">MANAGED SERVICE RELATIONSHIP</p>
                 </div>
@@ -54,7 +54,7 @@ const Header = () => {
                         <div className="p-2 rounded-full bg-gray-100">
                             <FaClock className="h-5 w-5 text-gray-600" />
                         </div>
-                        <span className="text-gray-700">24/7, 365 days Live Support</span>
+                        <span className="text-gray-700">24/7, 365-day Live Support</span>
                     </div>
                 </div>
             )}
@@ -77,7 +77,7 @@ const Header = () => {
                     <div className="p-2 rounded-full bg-gray-100">
                         <FaClock className="h-5 w-5 text-gray-600" />
                     </div>
-                    <span className="text-gray-700">24/7, 365 days Live Support</span>
+                    <span className="text-gray-700">24/7, 365-day Live Support</span>
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ const SignInForm = () => {
 
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email('Invalid email address')
+      .email('Invalid Email')
       .required('Email is required'),
     admin_password: Yup.string()
       // .min(6, 'Password must be at least 6 characters')
@@ -106,7 +106,7 @@ const SignInForm = () => {
                 </button>
                 {error && (
                   <p className="mt-2 text-sm text-red-500">
-                    {error?.data?.message || 'Login failed'}
+                    {error?.data?.message || 'incorrect username or password'}
                   </p>
                 )}
               </div>
