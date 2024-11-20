@@ -152,8 +152,10 @@ const SkillsAssessment = () => {
                 htmlFor="challengeDescription"
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
-               
                 {positionAppliedFor === "Customer Service Representative" && "Describe a challenging customer service situation and how you resolved it?"}
+                {positionAppliedFor === "Sales Representative" && "Describe your experience with meeting sales targets."}
+                {positionAppliedFor === "Technical Support" && "Describe your experience with troubleshooting software or hardware issues."}
+              
               </label>
               <Field
                 as="textarea"
@@ -169,7 +171,11 @@ const SkillsAssessment = () => {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">{positionAppliedFor === "Customer Service Representative" && "How do you handle difficult customers?"}</h3>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              {positionAppliedFor === "Customer Service Representative" && "How do you handle difficult customers?"}
+              {positionAppliedFor === "Sales Representative" && "What techniques do you use to build and maintain client relationships?"}
+              {positionAppliedFor === "Technical Support" && "Write your technical skills."}
+              </h3>
             <div>
               <Field
                 type="text"
@@ -190,6 +196,8 @@ const SkillsAssessment = () => {
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
                {positionAppliedFor === "Customer Service Representative" && "What strategies do you use to ensure customer satisfaction?"}
+               {positionAppliedFor === "Sales Representative" && "How do you handle objections during a sales pitch?"}
+               {positionAppliedFor === "Technical Support" && "List any technical certifications."}
               </label>
               <Field
                 as="textarea"
@@ -213,6 +221,8 @@ const SkillsAssessment = () => {
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
                 {positionAppliedFor === "Customer Service Representative" && "Can you provide an example of a time you went above and beyond for a customer?"}
+                {positionAppliedFor === "Sales Representative" && "Share an example of a successful sales strategy you implemented."}
+                {positionAppliedFor === "Technical Support" && "How do you stay updated on the latest technology trends?"}
               </label>
               <Field
                 as="textarea"
