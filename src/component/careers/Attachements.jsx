@@ -26,11 +26,11 @@ const Attachments = () => {
       .test('fileType', 'Only PDF files are allowed', (value) =>
         value && value.type === 'application/pdf'
       ),
-    // coverLetter: Yup.mixed()
-    //   .required('Cover Letter is required')
-    //   .test('fileType', 'Only PDF files are allowed', (value) =>
-    //     value && value.type === 'application/pdf'
-    //   ),
+    coverLetter: Yup.mixed()
+      .required('Cover Letter is required')
+      .test('fileType', 'Only PDF files are allowed', (value) =>
+        value && value.type === 'application/pdf'
+      ),
   });
 
   const handleFileChange = (e, setFieldValue, field) => {
