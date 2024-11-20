@@ -120,7 +120,7 @@ const Attachments = () => {
             {/* Cover Letter Upload */}
             <div>
               <label className="block text-lg font-medium text-gray-700">
-                Upload Cover Letter (Optional)
+                Upload Cover Letter
               </label>
               <div
                 className="mt-2 border-2 border-dashed border-gray-300 rounded-md p-4 text-center cursor-pointer"
