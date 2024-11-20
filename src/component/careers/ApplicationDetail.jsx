@@ -8,7 +8,7 @@ const ApplicationDetail = () => {
 
   const [application, setApplication] = useState(null);
   
-  const BASE_URL = "https://api.fastrakconnect.com/";
+  const BASE_URL = "https://api.fastrakconnect.com";
 
   useEffect(() => {
     if (applications.length) {
