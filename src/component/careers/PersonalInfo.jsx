@@ -126,7 +126,7 @@ const PersonalInformationForm = () => {
 
             {/* Address Fields */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Address</label>
+              <label className="block text-sm font-medium text-gray-700">Address <span className="text-red-500">*</span></label>
               <div className="grid grid-cols-2 gap-4 mt-2">
                 <div>
                 <Field
