@@ -5,20 +5,25 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAddExperienceMutation } from "../../services/career/experienceApi";
 
+
 const ProfessionalExperienceForm = () => {
   const navigate = useNavigate();
-  const applicantId = useSelector((state) => state.personalInfo.applicantId); // Redux selector for applicant ID
+  const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [addExperience, { isLoading, isError, error }] = useAddExperienceMutation();
 
   // Validation schema
   const validationSchema = Yup.object({
-    recentJobTitle: Yup.string().required("Reacent Job title is required"),
+    recentJobTitle: Yup.string().required("Recent Job title is required"),
     recentCompany: Yup.string().required("Company name is required"),
-    recentDuration: Yup.string().required("Duration is required"),
+    recentStartDate: Yup.date().required("Start date is required").nullable(),
+    recentEndDate: Yup.date().required("End date is required").nullable()
+      .min(Yup.ref('recentStartDate'), "End date must be after start date"),
     recentResponsibilities: Yup.string().required("Responsibilities are required"),
     previousJobTitle: Yup.string().required("Previous Job title is required"),
     previousCompany: Yup.string().required("Previous Company name is required"),
-    previousDuration: Yup.string().required("Previous Duration is required"),
+    previousStartDate: Yup.date().required("Start date is required").nullable(),
+    previousEndDate: Yup.date().required("End date is required").nullable()
+      .min(Yup.ref('previousStartDate'), "End date must be after start date"),
     previousResponsibilities: Yup.string().required("Previous job Responsibilities are required"),
   });
 
@@ -26,11 +31,13 @@ const ProfessionalExperienceForm = () => {
   const initialValues = {
     recentJobTitle: "",
     recentCompany: "",
-    recentDuration: "",
+    recentStartDate: "",
+    recentEndDate: "",
     recentResponsibilities: "",
     previousJobTitle: "",
     previousCompany: "",
-    previousDuration: "",
+    previousStartDate: "",
+    previousEndDate: "",
     previousResponsibilities: "",
   };
 
@@ -41,23 +48,24 @@ const ProfessionalExperienceForm = () => {
         job_application: applicantId,
         job_title: values.recentJobTitle,
         company: values.recentCompany,
-        duration_from: values.recentDuration.split(' – ')[0],  // Extracting start date
-        duration_to: values.recentDuration.split(' – ')[1],    // Extracting end date
+        duration_from: values.recentStartDate,
+        duration_to: values.recentEndDate,
         key_responsibilities: values.recentResponsibilities,
       },
       {
         job_application: applicantId,
         job_title: values.previousJobTitle,
         company: values.previousCompany,
-        duration_from: values.previousDuration.split(' – ')[0],  // Extracting start date
-        duration_to: values.previousDuration.split(' – ')[1],    // Extracting end date
+        duration_from: values.previousStartDate,
+        duration_to: values.previousEndDate,
         key_responsibilities: values.previousResponsibilities,
-      }
+      },
     ];
 
     try {
       await addExperience(payload).unwrap();
-      navigate("/skillassement"); // Navigate to the skill assessment page after successful submission
+      console.log(await addExperience(payload).unwrap())
+      navigate("/skillassement");
     } catch (err) {
       console.error("Error submitting experience:", err);
     }
@@ -74,9 +82,9 @@ const ProfessionalExperienceForm = () => {
         {() => (
           <Form>
             {/* Most Recent Job */}
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Most Recent Job Title:</h3>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-            <div>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Most Recent Job:</h3>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
                 <Field
                   type="text"
                   name="recentJobTitle"
@@ -102,22 +110,35 @@ const ProfessionalExperienceForm = () => {
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-
+              
               <div>
+              <h5 className="font-semibold text-gray-700 mb-2">Start</h5>
                 <Field
-                  type="text"
-                  name="recentDuration"
-                  placeholder="Duration (YYYY-MM-DD)"
+                  type="date"
+                  name="recentStartDate"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
-                  name="recentDuration"
+                  name="recentStartDate"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-
+             
               <div>
+              <h5 className="font-semibold text-gray-700 mb-2">End</h5>
+                <Field
+                  type="date"
+                  name="recentEndDate"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ErrorMessage
+                  name="recentEndDate"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div className="col-span-2">
                 <Field
                   type="text"
                   name="recentResponsibilities"
@@ -133,9 +154,9 @@ const ProfessionalExperienceForm = () => {
             </div>
 
             {/* Previous Job */}
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Previous Job Title:</h3>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-            <div>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Previous Job:</h3>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
                 <Field
                   type="text"
                   name="previousJobTitle"
@@ -161,22 +182,35 @@ const ProfessionalExperienceForm = () => {
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-
+             
               <div>
+              <h5 className="font-semibold text-gray-700 mb-2">Start</h5>
                 <Field
-                  type="text"
-                  name="previousDuration"
-                  placeholder="Duration (YYYY-MM-DD)"
+                  type="date"
+                  name="previousStartDate"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
-                  name="previousDuration"
+                  name="previousStartDate"
                   component="div"
                   className="text-red-500 text-sm mt-1"
                 />
               </div>
-
+             
               <div>
+              <h5 className="font-semibold text-gray-700 mb-2">End</h5>
+                <Field
+                  type="date"
+                  name="previousEndDate"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ErrorMessage
+                  name="previousEndDate"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+              <div className="col-span-2">
                 <Field
                   type="text"
                   name="previousResponsibilities"
