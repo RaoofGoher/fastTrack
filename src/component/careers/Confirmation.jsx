@@ -1,8 +1,13 @@
 import React from 'react';
+// import {Link} from "../Thanks"
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import {  useNavigate } from 'react-router-dom';
 
 const Confirmation = () => {
+
+  const navigate = useNavigate()
+
   const validationSchema = Yup.object({
     certification: Yup.boolean().oneOf([true], 'You must certify the information provided'),
     date: Yup.date().required('Date is required'),
@@ -20,6 +25,7 @@ const Confirmation = () => {
           // Handle form submission
           console.log(values);
           alert ("Thank You for submitting")
+          navigate('/thanksyou')
         }}
       >
         {({ errors, touched }) => (
@@ -55,12 +61,14 @@ const Confirmation = () => {
             </div>
 
             <div>
+           
               <button
                 type="submit"
                 className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
               >
                 Submit
               </button>
+            
             </div>
           </Form>
         )}

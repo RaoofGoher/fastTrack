@@ -26,6 +26,7 @@ import SignIn from './component/careers/SignIn.jsx'
 import ProtectedRoute from './component/careers/ProtectedRoute.jsx'
 import ApplicationDetail from './component/careers/ApplicationDetail.jsx';
 import UnderConstruction from './component/adminDashboard/UnderConstruction.jsx';
+import Thanks from './component/Thanks.jsx';
 
 function App() {
     return (
@@ -55,6 +56,9 @@ function App() {
                     <Route path='/attachements' element={<Attachements />} />
                     <Route path='/confirmation' element={<Confirmation />} />
                     <Route path='/signin' element={<SignIn />} />
+
+                    {/* thanks page */}
+                    <Route path='/thanksyou' element={<Thanks/>} />
 
 
                 </Route>
