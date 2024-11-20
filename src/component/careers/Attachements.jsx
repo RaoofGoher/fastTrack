@@ -26,11 +26,11 @@ const Attachments = () => {
       .test('fileType', 'Only PDF files are allowed', (value) =>
         value && value.type === 'application/pdf'
       ),
-    // coverLetter: Yup.mixed()
-    //   .required('Cover Letter is required')
-    //   .test('fileType', 'Only PDF files are allowed', (value) =>
-    //     value && value.type === 'application/pdf'
-    //   ),
+    coverLetter: Yup.mixed()
+      .required('Cover Letter is required')
+      .test('fileType', 'Only PDF files are allowed', (value) =>
+        value && value.type === 'application/pdf'
+      ),
   });
 
   const handleFileChange = (e, setFieldValue, field) => {
@@ -68,7 +68,7 @@ const Attachments = () => {
       <Formik
         initialValues={{
           resume: null,
-          // coverLetter: null,
+          coverLetter: null,
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -118,7 +118,7 @@ const Attachments = () => {
             </div>
 
             {/* Cover Letter Upload */}
-            {/* <div>
+            <div>
               <label className="block text-lg font-medium text-gray-700">
                 Upload Cover Letter (Optional)
               </label>
@@ -163,7 +163,7 @@ const Attachments = () => {
                   {errors.coverLetter}
                 </div>
               )}
-            </div> */}
+            </div>
 
             {/* Submit Button */}
             <div>
