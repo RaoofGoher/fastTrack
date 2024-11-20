@@ -123,7 +123,7 @@ const ApplicationDetail = () => {
   </p>
   <p>
     <strong>Cover Letter:</strong>{' '}
-    {application.media_uploads.cover_letter ? (
+    {application.media_uploads?.cover_letter ? (
       <a
         href={`${BASE_URL}${application.media_uploads?.cover_letter}`}
         download
