@@ -16,6 +16,7 @@ import {mediaApi} from './services/career/mediaApi'
 import authReducer from './services/career/authSlice'
 import { apiSlice } from './services/career/loginApi';
 import { applicationsApi } from './services/career/getAllApplicantSlice';
+import positionAppliedReducer from './services/career/positionApplied';
 
 const store = configureStore({
   reducer: {
@@ -35,6 +36,7 @@ const store = configureStore({
     media: addMediaReducer,
     personalInfo: personalInfoReducer,  // Pass the reducer directly
     auth: authReducer,
+    positionApplied: positionAppliedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

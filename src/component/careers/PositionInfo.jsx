@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { useSubmitPositionInformationMutation } from '../../services/career/positionInfoApi';
+import { setPositionAppliedFor } from '../../services/career/positionApplied';
 const PositionInformationForm = () => {
   const [employmentType, setEmploymentType] = useState(""); // State to track employment type
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
   console.log("here is applicant id",applicantId)
 
@@ -43,6 +44,7 @@ const PositionInformationForm = () => {
   // Submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      dispatch(setPositionAppliedFor(values.position_applied_for));
       const payload = { ...values, job_application: applicantId }; // Add applicantId to payload
       await submitPositionInformation(payload).unwrap();
       console.log('Form submitted successfully:', payload);
