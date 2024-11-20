@@ -11,30 +11,7 @@ const SkillsAssessment = () => {
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [submitSkillsAssessment, { isLoading, isSuccess, isError, error }] =
     useSubmitSkillsAssessmentMutation();
-  console.log("position applied for", positionAppliedFor);
-
-  // Mapping role-based questions
-  const roleBasedQuestions = {
-    "Customer Service Representative": [
-      "Describe a challenging customer service situation and how you resolved it?",
-      "How do you handle difficult customers?",
-      "What strategies do you use to ensure customer satisfaction?",
-      "Can you provide an example of a time you went above and beyond for a customer?"
-    ],
-    "Sales Representative": [
-      "Describe your experience with meeting sales targets.",
-      "What techniques do you use to build and maintain client relationships?",
-      "How do you handle objections during a sales pitch?",
-      "Share an example of a successful sales strategy you implemented."
-    ],
-    "Technical Support": [
-      "Describe your experience with troubleshooting software or hardware issues.",
-      "Write your technical skills.",
-      "List any technical certifications.",
-      "How do you stay updated on the latest technology trends?"
-    ]
-  };
-
+ console.log("position applied for",positionAppliedFor)
   // Validation schema
   const validationSchema = Yup.object({
     languages: Yup.array()
@@ -55,7 +32,6 @@ const SkillsAssessment = () => {
     challengeDescription: "",
     troubleshootingExperience: "",
     technicalCertifications: "",
-    tech_skills: "",
   };
 
   // Submit handler
@@ -63,21 +39,19 @@ const SkillsAssessment = () => {
     const payload = {
       job_application: applicantId, // Adjust this field based on your application flow
       languages: values.languages.join(","),
-      tech_skills: values.tech_skills,
+      tech_skills:values.tech_skills,
       certificates: values.technicalCertifications,
       tech_experience_description: `${values.challengeDescription}\n${values.troubleshootingExperience}`,
     };
 
     try {
-      const response = await submitSkillsAssessment(payload).unwrap();
-      console.log("skill assessment response", response);
+     const response = await submitSkillsAssessment(payload).unwrap();
+     console.log("skill assement response",response)
       navigate("/education"); // Redirect on success
     } catch (err) {
       console.error("Submission failed: ", err);
     }
   };
-
-  const questions = roleBasedQuestions[positionAppliedFor] || [];
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
@@ -131,6 +105,15 @@ const SkillsAssessment = () => {
                   />
                   Creole
                 </label>
+                {/* <label className="flex items-center gap-2">
+                  <Field
+                    type="checkbox"
+                    name="languages"
+                    value="Other"
+                    className="accent-blue-500"
+                  />
+                  Other
+                </label> */}
               </div>
               <ErrorMessage
                 name="languages"
@@ -138,54 +121,88 @@ const SkillsAssessment = () => {
                 className="text-red-500 text-sm mt-1"
               />
             </div>
-
-            {/* Render questions dynamically */}
-            {questions.length > 0 &&
-              questions.map((question, index) => (
-                <div key={index} className="mb-6">
-                  <label
-                    htmlFor={`question${index}`}
-                    className="block text-lg font-semibold text-gray-700 mb-2"
-                  >
-                    {question}
-                  </label>
-                  <Field
-                    as="textarea"
-                    id={`question${index}`}
-                    name={`question${index}`}
-                    rows="5"
-                    placeholder="Enter your response here"
-                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <ErrorMessage
-                    name={`question${index}`}
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-              ))
-            }
-
-            {/* Technical Skills */}
-            {/* <div className="mb-6">
+{/* questions */}
+            {/* Customer Service Challenge */}
+            <div className="mb-6">
               <label
-                htmlFor="tech_skills"
+                htmlFor="challengeDescription"
                 className="block text-lg font-semibold text-gray-700 mb-2"
               >
-                Write your technical skills
+                Describe a challenging customer service situation and how you resolved it
               </label>
               <Field
-                type="text"
-                name="tech_skills"
-                placeholder="Enter your technical skills"
+                as="textarea"
+                id="challengeDescription"
+                name="challengeDescription"
+                rows="5"
+                placeholder="Enter your response here"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <ErrorMessage
-                name="tech_skills"
+                name="challengeDescription"
                 component="div"
                 className="text-red-500 text-sm mt-1"
               />
-            </div> */}
+            </div>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Tech Skills</h3>
+            <div>
+                <Field
+                  type="text"
+                  name="tech_skills"
+                  placeholder="Title"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <ErrorMessage
+                  name="tech_skills"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
+              </div>
+            {/* Troubleshooting Experience */}
+            <div className="mb-6">
+              <label
+                htmlFor="troubleshootingExperience"
+                className="block text-lg font-semibold text-gray-700 mb-2"
+              >
+                Describe your experience with troubleshooting software or hardware issues
+              </label>
+              <Field
+                as="textarea"
+                id="troubleshootingExperience"
+                name="troubleshootingExperience"
+                rows="5"
+                placeholder="Enter your response here"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <ErrorMessage
+                name="troubleshootingExperience"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
+
+            {/* Technical Certifications */}
+            <div className="mb-6">
+              <label
+                htmlFor="technicalCertifications"
+                className="block text-lg font-semibold text-gray-700 mb-2"
+              >
+                List any technical certifications
+              </label>
+              <Field
+                as="textarea"
+                id="technicalCertifications"
+                name="technicalCertifications"
+                rows="5"
+                placeholder="Enter your response here"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <ErrorMessage
+                name="technicalCertifications"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
 
             {/* Submit Button */}
             <button
