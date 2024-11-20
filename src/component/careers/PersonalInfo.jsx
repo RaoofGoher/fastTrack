@@ -18,10 +18,10 @@ const PersonalInformationForm = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     // phone: Yup.string().required("Phone number is required"),
-    street: Yup.string(),
-    city: Yup.string(),
-    state: Yup.string(),
-    zip: Yup.string().matches(/^\d{5}$/, "ZIP must be 5 digits"),
+    street: Yup.string().required("Street is required"),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("state is required"),
+    zip: Yup.string().matches(/^\d{5}$/, "ZIP must be 5 digits").required("zip is required"),
     linkedin: Yup.string().url("Invalid URL"),
   });
 
@@ -128,36 +128,60 @@ const PersonalInformationForm = () => {
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">Address</label>
               <div className="grid grid-cols-2 gap-4 mt-2">
+                <div>
                 <Field
                   type="text"
                   name="street"
                   placeholder="Street"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                   <ErrorMessage
+                name="street"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+              </div>
+              <div>
                 <Field
                   type="text"
                   name="city"
                   placeholder="City"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                   <ErrorMessage
+                name="city"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+              </div>
+              <div>
                 <Field
                   type="text"
                   name="state"
                   placeholder="State"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                   <ErrorMessage
+                name="state"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
+              </div>
+              <div>
                 <Field
                   type="text"
                   name="zip"
                   placeholder="ZIP"
                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              </div>
+              
               <ErrorMessage
                 name="zip"
                 component="div"
                 className="text-red-500 text-sm mt-1"
               />
+              </div>
+            </div>
             </div>
 
             {/* LinkedIn Field */}
