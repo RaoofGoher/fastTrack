@@ -104,7 +104,7 @@ const SkillsAssessment = () => {
                   />
                   Creole
                 </label>
-                <label className="flex items-center gap-2">
+                {/* <label className="flex items-center gap-2">
                   <Field
                     type="checkbox"
                     name="languages"
@@ -112,7 +112,7 @@ const SkillsAssessment = () => {
                     className="accent-blue-500"
                   />
                   Other
-                </label>
+                </label> */}
               </div>
               <ErrorMessage
                 name="languages"
