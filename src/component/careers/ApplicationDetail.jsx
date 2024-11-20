@@ -26,14 +26,14 @@ const ApplicationDetail = () => {
       {/* Personal Information Card */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         <h3 className="text-lg font-bold mb-2">Personal Information</h3>
-        <p><strong>Name:</strong> {application.name}</p>
-        <p><strong>Email:</strong> {application.email}</p>
-        <p><strong>Phone:</strong> {application.phone}</p>
-        <p><strong>Address:</strong> {application.address}</p>
-        <p><strong>Position Applied For:</strong> {application.position_applied_for}</p>
-        <p><strong>Employment Type:</strong> {application.employment_type}</p>
-        <p><strong>Preferred Shift:</strong> {application.preferred_shift}</p>
-        <p><strong>Applied Date:</strong> {application.applied_date}</p>
+        <p><strong>Name:</strong> {application?.name}</p>
+        <p><strong>Email:</strong> {application?.email}</p>
+        <p><strong>Phone:</strong> {application?.phone}</p>
+        <p><strong>Address:</strong> {application?.address}</p>
+        <p><strong>Position Applied For:</strong> {application?.position_applied_for}</p>
+        <p><strong>Employment Type:</strong> {application?.employment_type}</p>
+        <p><strong>Preferred Shift:</strong> {application?.preferred_shift}</p>
+        <p><strong>Applied Date:</strong> {application?.applied_date}</p>
       </div>
 
       {/* Experiences Card */}
@@ -42,11 +42,11 @@ const ApplicationDetail = () => {
         {application.experiences.length ? (
           application.experiences.map((exp, index) => (
             <div key={index} className="mb-4">
-              <p><strong>Job Title:</strong> {exp.job_title}</p>
-              <p><strong>Company:</strong> {exp.company}</p>
-              <p><strong>Duration From:</strong> {exp.duration_from}</p>
-              <p><strong>Duration To:</strong> {exp.duration_to || "Present"}</p>
-              <p><strong>Key Responsibilities:</strong> {exp.key_responsibilities}</p>
+              <p><strong>Job Title:</strong> {exp?.job_title}</p>
+              <p><strong>Company:</strong> {exp?.company}</p>
+              <p><strong>Duration From:</strong> {exp?.duration_from}</p>
+              <p><strong>Duration To:</strong> {exp?.duration_to || "Present"}</p>
+              <p><strong>Key Responsibilities:</strong> {exp?.key_responsibilities}</p>
             </div>
           ))
         ) : (
@@ -57,10 +57,10 @@ const ApplicationDetail = () => {
       {/* Skills Assessment Card */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         <h3 className="text-lg font-bold mb-2">Skills Assessment</h3>
-        <p><strong>Languages:</strong> {application.skills_assessment.languages}</p>
-        <p><strong>Technical Skills:</strong> {application.skills_assessment.tech_skills}</p>
-        <p><strong>Certificates:</strong> {application.skills_assessment.certificates}</p>
-        <p><strong>Description:</strong> {application.skills_assessment.tech_experience_description}</p>
+        <p><strong>Languages:</strong> {application.skills_assessment?.languages}</p>
+        <p><strong>Technical Skills:</strong> {application.skills_assessment?.tech_skills}</p>
+        <p><strong>Certificates:</strong> {application.skills_assessment?.certificates}</p>
+        <p><strong>Description:</strong> {application.skills_assessment?.tech_experience_description}</p>
       </div>
 
       {/* Education Card */}
@@ -69,9 +69,9 @@ const ApplicationDetail = () => {
         {application.educations.length ? (
           application.educations.map((edu, index) => (
             <div key={index} className="mb-4">
-              <p><strong>Degree:</strong> {edu.degree}</p>
-              <p><strong>Institute:</strong> {edu.institute}</p>
-              <p><strong>Graduation Year:</strong> {edu.graduation_year}</p>
+              <p><strong>Degree:</strong> {edu?.degree}</p>
+              <p><strong>Institute:</strong> {edu?.institute}</p>
+              <p><strong>Graduation Year:</strong> {edu?.graduation_year}</p>
             </div>
           ))
         ) : (
@@ -82,10 +82,10 @@ const ApplicationDetail = () => {
       {/* Additional Information Card */}
       <div className="bg-white p-4 rounded-lg shadow-md">
         <h3 className="text-lg font-bold mb-2">Additional Information</h3>
-        <p><strong>Why Interested:</strong> {application.additional_info.why_interested}</p>
-        <p><strong>Reason for Strong Fit:</strong> {application.additional_info.strong_fit_reason}</p>
-        <p><strong>Eligible to Work:</strong> {application.additional_info.eligible_to_work ? "Yes" : "No"}</p>
-        <p><strong>Source of Opportunity:</strong> {application.additional_info.source_of_opportunity}</p>
+        <p><strong>Why Interested:</strong> {application.additional_info?.why_interested}</p>
+        <p><strong>Reason for Strong Fit:</strong> {application.additional_info?.strong_fit_reason}</p>
+        <p><strong>Eligible to Work:</strong> {application.additional_info?.eligible_to_work ? "Yes" : "No"}</p>
+        <p><strong>Source of Opportunity:</strong> {application.additional_info?.source_of_opportunity}</p>
       </div>
 
       {/* Media Uploads Card */}
