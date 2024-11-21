@@ -17,6 +17,7 @@ import authReducer from './services/career/authSlice'
 import { apiSlice } from './services/career/loginApi';
 import { applicationsApi } from './services/career/getAllApplicantSlice';
 import positionAppliedReducer from './services/career/positionApplied';
+import formDataReducer from './services/career/formDataSlice';
 
 const store = configureStore({
   reducer: {
@@ -37,6 +38,7 @@ const store = configureStore({
     personalInfo: personalInfoReducer,  // Pass the reducer directly
     auth: authReducer,
     positionApplied: positionAppliedReducer,
+    formData: formDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

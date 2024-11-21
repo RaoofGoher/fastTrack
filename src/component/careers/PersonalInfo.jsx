@@ -4,20 +4,24 @@ import * as Yup from "yup";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setApplicantId } from "../../services/career/PersonalInfo"; // Import the action
-import { useSubmitPersonalInfoMutation } from "../../services/career/PersonalInfoApi"; // Import the mutation hook
-
+import { useSelector, useDispatch } from "react-redux";
+import { applicantId,setApplicantId } from "../../services/career/PersonalInfo"; // Import the action
+import { useSubmitPersonalInfoMutation, useUpdatePersonalInfoMutation, } from "../../services/career/PersonalInfoApi"; // Import the mutation hook
+import { setFormData } from '../../services/career/formDataSlice'; // Import the action
 
 const PersonalInformationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [submitPersonalInfo] = useSubmitPersonalInfoMutation();
+  const [updatePersonalInfo] = useUpdatePersonalInfoMutation();
+  const { personalInfo } = useSelector((state) => state.formData);
+
   // Form validation schema
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
-    // phone: Yup.string().required("Phone number is required"),
+    phone: Yup.string().required("Phone number is required"),
     street: Yup.string().required("Street is required"),
     city: Yup.string().required("City is required"),
     state: Yup.string().required("state is required"),
@@ -36,21 +40,26 @@ const PersonalInformationForm = () => {
     zip: "",
     linkedin: "",
   };
-
   // Form submit handler
   const handleSubmit = async (values) => {
     // Combine address into a single string
     const address = `${values.street}, ${values.city}, ${values.state} ${values.zip}`;
 
     try {
-      const response = await submitPersonalInfo({
-        ...values,
-        address, // Include the combined address in the request body
-      }).unwrap(); // unwrap to access the result or catch errors
-
-      // Store the applicantId in the Redux store
-      dispatch(setApplicantId(response.applicant_id));
-      console.log("hello",response.applicant_id)
+      if (personalInfo && personalInfo.name) {
+        const response = await updatePersonalInfo({
+          applicantId,
+          data: values,
+        }).unwrap();
+        console.log("Updated successfully:", response);
+      } else {
+        // Submit new personal info
+        const response = await submitPersonalInfo(values).unwrap();
+        console.log("Submitted successfully:", response)
+        dispatch(setApplicantId(response.applicant_id)); 
+        dispatch(setFormData({ componentName: 'personalInfo', data: values }));
+      }
+             
       navigate("/positioninfo"); // Redirect to the next page
     } catch (error) {
       console.error("Error submitting personal info:", error);
@@ -61,11 +70,11 @@ const PersonalInformationForm = () => {
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Personal Information:</h2>
       <Formik
-        initialValues={initialValues}
+        initialValues={personalInfo && personalInfo.name ? personalInfo : initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
+        {({values, setFieldValue }) => (
           <Form>
             {/* Name Field */}
             <div className="mb-4">
@@ -112,6 +121,7 @@ const PersonalInformationForm = () => {
               </label>
               <div className="phone-input-container">
               <PhoneInput
+               value={values.phone || ""} 
                 country={"pk"}
                 inputClass="!w-full px-4 !py-2 !rounded-md !border !mt-1 "
                 onChange={(value) => setFieldValue("phone", value)}
@@ -208,7 +218,7 @@ const PersonalInformationForm = () => {
               type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
             >
-              Next
+             {personalInfo && personalInfo.name ? "Update":"Next"}
             </button>
           </Form>
         )}
