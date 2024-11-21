@@ -73,14 +73,16 @@ const ProfessionalExperienceForm = () => {
   const experienceHandler = () => {
     setAddExperienceBtn((prevState) => !prevState);
   };
-
+const handleSubmit2 = ()=> {
+  navigate("/skillassement");
+}
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="flex flex-row justify-between items-center mb-4">
       <button onClick={experienceHandler} className="bg-gray-700 px-4 py-2 rounded-lg text-white border-2 border-gray-700 hover:bg-white hover:text-gray-700">
         {addExperienceBtn === false ? "click to add experience if any" :"close expereience" }
         </button>
-        {addExperienceBtn === false ? <button onClick={handleSubmit} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Next</button> : ""}
+        {addExperienceBtn === false ? <button onClick={handleSubmit2} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Skip</button> : ""}
         </div>
       {addExperienceBtn && <>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Professional Experience</h2>
