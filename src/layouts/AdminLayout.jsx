@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate, Link } from "react-router-dom";
+import { Outlet, useNavigate, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../services/career/authSlice"; // Adjust path to your authSlice
+import { logout } from "../services/career/authSlice";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -37,15 +37,13 @@ const AdminLayout = () => {
       <div className="flex h-screen">
         {/* Sidebar */}
         <div
-          className={`bg-gray-800 text-white ${
-            isSidebarOpen ? "w-64" : "w-16"
-          } transition-all duration-300 flex flex-col`}
+          className={`bg-gray-800 text-white ${isSidebarOpen ? "w-64" : "w-16"
+            } transition-all duration-300 flex flex-col`}
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
             <h1
-              className={`text-xl font-bold ${
-                isSidebarOpen ? "block" : "hidden"
-              } transition-opacity`}
+              className={`text-xl font-bold ${isSidebarOpen ? "block" : "hidden"
+                } transition-opacity`}
             >
               Admin
             </h1>
@@ -60,35 +58,54 @@ const AdminLayout = () => {
               )}
             </button>
           </div>
-
-          <ul className="mt-4 space-y-2 flex-grow">
-            <Link to="/admin">
-            <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
-              <FaTachometerAlt className="mr-4" />
-              {isSidebarOpen && <span>Dashboard</span>}
-            </li>
-            </Link>
-            <Link to="admin/underconstruction">
-            <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
-              <FaUsers className="mr-4" />
-              {isSidebarOpen && <span>Users</span>}
-            </li>
-            </Link>
-            <Link  to="admin/underconstruction">
-            <li className="flex items-center p-2 hover:bg-gray-700 cursor-pointer">
-              <FaCog className="mr-4" />
-              {isSidebarOpen && <span>Settings</span>}
-            </li>
-            </Link>
-          </ul>
+          <div className="mt-4 space-y-2 flex-grow">
+            <div>
+              <NavLink
+              end
+                to="/admin"
+                className={({ isActive }) =>
+                  `flex items-center p-2 cursor-pointer ${isActive ? "bg-gray-700 text-orange-400" : "hover:bg-gray-700"
+                  }`
+                }
+              >
+                <FaTachometerAlt className="mr-4" />
+                {isSidebarOpen && <span>Dashboard</span>}
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+              end
+                to="underconstructionss"
+                className={({ isActive }) =>
+                  `flex items-center p-2 cursor-pointer ${isActive ? "bg-gray-700 text-orange-400" : "hover:bg-gray-700"
+                  }`
+                }
+              >
+                <FaUsers className="mr-4" />
+                {isSidebarOpen && <span>Users</span>}
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+              end
+                to="underconstruction" // Example dynamic path
+                className={({ isActive }) =>
+                  `flex items-center p-2 cursor-pointer ${isActive ? "bg-gray-700 text-orange-400" : "hover:bg-gray-700"
+                  }`
+                }
+              >
+                <FaCog className="mr-4" />
+                {isSidebarOpen && <span>Settings</span>}
+              </NavLink>
+            </div>
+          </div>
 
           {/* Sign out button */}
           <div className="mt-auto p-4">
             <button
               onClick={handleSignOut}
-              className={`flex items-center ml-[-10px] ${
-                isSidebarOpen ? "px-5" : "px-1"
-              } py-2 bg-orange-500 text-white hover:bg-red-600 hover:text-white transition rounded`}
+              className={`flex items-center ml-[-10px] ${isSidebarOpen ? "px-5" : "px-1"
+                } py-2 bg-orange-500 text-white hover:bg-red-600 hover:text-white transition rounded`}
             >
               {isSidebarOpen ? (
                 <>
