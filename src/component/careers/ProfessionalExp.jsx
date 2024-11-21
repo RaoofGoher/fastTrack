@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const ProfessionalExperienceForm = () => {
   const navigate = useNavigate();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [addExperience, { isLoading, isError, error }] = useAddExperienceMutation();
+  const [addExperienceBtn, setAddExperienceBtn] = useState(false);
 
   // Validation schema
   const validationSchema = Yup.object({
@@ -69,10 +70,20 @@ const ProfessionalExperienceForm = () => {
       console.error("Error submitting experience:", err);
     }
   };
+  const experienceHandler = () => {
+    setAddExperienceBtn((prevState) => !prevState);
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Professional Experience</h2>
+      <div className="flex flex-row justify-between items-center mb-4">
+      <button onClick={experienceHandler} className="bg-gray-700 px-4 py-2 rounded-lg text-white border-2 border-gray-700 hover:bg-white hover:text-gray-700">
+        {addExperienceBtn === false ? "click to add experience if any" :"close expereience" }
+        </button>
+        {addExperienceBtn === false ? <button onClick={handleSubmit} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Next</button> : ""}
+        </div>
+      {addExperienceBtn && <>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Professional Experience</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -236,6 +247,8 @@ const ProfessionalExperienceForm = () => {
           </Form>
         )}
       </Formik>
+      </>}
+     
     </div>
   );
 };
