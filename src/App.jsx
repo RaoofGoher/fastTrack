@@ -63,19 +63,12 @@ function App() {
 
                 </Route>
 
-                <Route
-                    path="/admin"
-                    element={
-                        <ProtectedRoute roles={['admin']}>
-                            <AdminLayout />
-                        </ProtectedRoute>
-                    }
-                >
+                <Route path="/admin"  element={<ProtectedRoute roles={['admin']}> <AdminLayout /> </ProtectedRoute> }>
                     <Route index element={<AdminPage />} />
-                    <Route path="admin/application/:id" element={<ApplicationDetail />} />
-                    <Route path="admin/underconstruction" element={<UnderConstruction/>}/>
+                    <Route path="application/:id" element={<ApplicationDetail />} />
+                    <Route path="*" element={<UnderConstruction/>}/>
                 </Route>
-                <Route path="*" element={<Navigate to="/signin" />} />
+                {/* <Route path="*" element={<Navigate to="/signin" />} /> */}
             </Routes>
         </Router>
     );
