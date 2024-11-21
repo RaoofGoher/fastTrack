@@ -64,7 +64,6 @@ const ProfessionalExperienceForm = () => {
 
     try {
       await addExperience(payload).unwrap();
-      console.log(await addExperience(payload).unwrap())
       navigate("/skillassement");
     } catch (err) {
       console.error("Error submitting experience:", err);
