@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from 'react-redux';
 import { useSubmitPositionInformationMutation } from '../../services/career/positionInfoApi';
 import { setPositionAppliedFor } from '../../services/career/positionApplied';
+import { setFormData } from '../../services/career/formDataSlice'; // Import the action
 const PositionInformationForm = () => {
   const [employmentType, setEmploymentType] = useState(""); // State to track employment type
   const navigate = useNavigate();

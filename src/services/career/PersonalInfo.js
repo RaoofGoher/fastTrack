@@ -15,5 +15,5 @@ const personalInfo = createSlice({
   },
 });
 
-export const { setApplicantId } = personalInfo.actions;
+export const { applicantId, setApplicantId } = personalInfo.actions;
 export default personalInfo.reducer;
