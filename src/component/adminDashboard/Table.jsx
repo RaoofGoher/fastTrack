@@ -44,8 +44,7 @@ const Table = () => {
 
   const handleViewMore = (application) => {
     // Navigate to the new page, passing the application ID as a parameter
-    console.log(`Navigating to /admin/application/${application.applicant_id}`);
-    navigate(`admin/application/${application.applicant_id
+    navigate(`application/${application.applicant_id
     }`);
   };
 
