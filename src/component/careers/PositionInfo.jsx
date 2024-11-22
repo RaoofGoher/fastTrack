@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useSelector,useDispatch } from 'react-redux';
-import { useSubmitPositionInformationMutation } from '../../services/career/positionInfoApi';
+import { useSubmitPositionInformationMutation,useUpdatePositionInformationMutation } from '../../services/career/positionInfoApi';
 import { setPositionAppliedFor } from '../../services/career/positionApplied';
 import { setFormData } from '../../services/career/formDataSlice'; // Import the action
 const PositionInformationForm = () => {
@@ -11,9 +11,12 @@ const PositionInformationForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
-  console.log("here is applicant id",applicantId)
-
   const [submitPositionInformation] = useSubmitPositionInformationMutation();
+  const [updatePositionInformation] = useUpdatePositionInformationMutation();
+  const { positionInfo } = useSelector((state) => state.formData);
+
+
+
   // Validation schema
   const validationSchema = Yup.object({
     position_applied_for: Yup.string().required("Position is required"),
@@ -42,20 +45,37 @@ const PositionInformationForm = () => {
     applied_date: "",
   };
 
+
+
   // Submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
+    
     try {
-      dispatch(setPositionAppliedFor(values.position_applied_for));
-      const payload = { ...values, job_application: applicantId }; // Add applicantId to payload
-      await submitPositionInformation(payload).unwrap();
-      console.log('Form submitted successfully:', payload);
-      navigate('/professionalexp');
+      console.log("hello position info",positionInfo)
+      if (positionInfo && positionInfo.position_applied_for) {
+       
+        const response = await updatePositionInformation({
+          applicantId:applicantId,
+          data: values,
+        }).unwrap();
+        console.log("Updated successfully:", response);
+      } else {
+        dispatch(setPositionAppliedFor(values.position_applied_for));
+        // Submit new personal info
+        const payload = { ...values, job_application: applicantId }; // Add applicantId to payload
+        const response = await submitPositionInformation(payload).unwrap();
+        console.log("submit successfully:", response, payload); 
+        
+        dispatch(setFormData({ componentName: 'positionInfo', data: payload }));
+      }
+             
+      navigate("/professionalexp"); // Redirect to the next page
     } catch (error) {
-      console.error('Error submitting form:', error);
-    } finally {
-      setSubmitting(false);
+      console.error("Error submitting personal info:", error);
     }
+
   };
+
 
 
   // Handle employment type change
@@ -70,11 +90,11 @@ const PositionInformationForm = () => {
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Position Information:</h2>
       <Formik
-        initialValues={initialValues}
+        initialValues={positionInfo && positionInfo.position_applied_for ? positionInfo : initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
+        {({values, setFieldValue }) => (
           <Form>
             {/* Position Applied For */}
             <div className="mb-4">
@@ -192,12 +212,15 @@ const PositionInformationForm = () => {
             </div>
 
             {/* Submit Button */}
+            <div className="flex justify-between mt-4">
             <button
               type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
             >
-              Next
+             {positionInfo && positionInfo.position_applied_for ? "Update":"Next"}
             </button>
+            <Link to={"/jobs"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none">Back</Link>
+            </div>
           </Form>
         )}
       </Formik>

@@ -11,8 +11,19 @@ export const positionInformationApi = createApi({
         body: payload,
       }),
     }),
+    updatePositionInformation: builder.mutation({
+      query: ({ applicantId, payload }) => ({
+        url: `/application/update-position-info/${applicantId}/`,
+        method: 'PATCH',
+        body: payload,
+      }),
+    }),
   }),
 });
 
-export const { useSubmitPositionInformationMutation } = positionInformationApi;
+export const { 
+  useSubmitPositionInformationMutation, 
+  useUpdatePositionInformationMutation 
+} = positionInformationApi;
+
 export default positionInformationApi;
