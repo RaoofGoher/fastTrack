@@ -46,7 +46,7 @@ const VideoIntro = () => {
     try {
       // Call your API for submission here
       console.log('Form Data:', formData);
-      navigate("/attachements");
+      // navigate("/attachements");
     } catch (error) {
       console.error('Error uploading video:', error);
     }

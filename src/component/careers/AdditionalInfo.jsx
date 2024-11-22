@@ -42,7 +42,7 @@ const AdditionalInformation = () => {
           try {
             await postAdditionalInfo(payload).unwrap();
             console.log("payload", payload);
-            navigate('/videoIntro');
+            navigate('/attachements');
           } catch (error) {
             console.error('Error submitting form:', error);
           } finally {
