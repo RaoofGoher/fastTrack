@@ -13,7 +13,7 @@ const ProfessionalExperienceForm = () => {
   const [addExperience] = useAddExperienceMutation();
   const [updateExperience] = useUpdateExperienceMutation();
   const { professionalExp } = useSelector((state) => state.formData);
-  const [addExperienceBtn, setAddExperienceBtn] = useState(professionalExp[0]?.job_title ? true : false);
+  const [addExperienceBtn, setAddExperienceBtn] = useState(professionalExp.length > 0 && professionalExp[0]?.job_title ? true : false);
 
 
   // Validation schema
@@ -112,32 +112,22 @@ const ProfessionalExperienceForm = () => {
 
   }
   const handleSkip = (resetForm) => {
-   resetForm();
+    resetForm();
     navigate("/skillassement");
     dispatch(setFormData({ componentName: 'professionalExp', data: "" }));
   };
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
       <div className="flex flex-row justify-between items-center mb-4">
-        {professionalExp && professionalExp[0]?.job_title === "" ? (
+        {professionalExp.length > 0  ? "" : (
           <button
             onClick={experienceHandler}
             className="bg-gray-700 px-4 py-2 rounded-lg text-white border-2 border-gray-700 hover:bg-white hover:text-gray-700"
           >
-            {addExperienceBtn === false
-              ? "Click to add experience if any"
-              : "Close experience"}
+            {addExperienceBtn === false ? "click to add experience if any" : "close experience"}
           </button>
-        ) : null}
-
-        {addExperienceBtn === false ? (
-          <button
-            onClick={handleSubmit2}
-            className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500"
-          >
-            Skip
-          </button>
-        ) : null}
+        )}
+        {addExperienceBtn === false ? <button onClick={handleSubmit2} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Skip</button> : ""}
       </div>
 
       {addExperienceBtn && <>
@@ -174,9 +164,9 @@ const ProfessionalExperienceForm = () => {
           onSubmit={handleSubmit}
           enableReinitialize
         >
-          {({resetForm}) => (
+          {({ resetForm }) => (
             <Form>
-              <button type="button"  onClick={() => handleSkip(resetForm)} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Skip</button>
+              {professionalExp.length > 0 ? <button type="button" onClick={() => handleSkip(resetForm)} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Skip</button> : ""}
               {/* Most Recent Job */}
               <h3 className="text-lg font-semibold text-gray-700 mb-2">Most Recent Job:</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
