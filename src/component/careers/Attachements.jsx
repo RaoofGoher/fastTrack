@@ -51,7 +51,7 @@ const Attachments = () => {
     formData.append('resume', resume);
     formData.append('cover_letter', coverLetter);
     formData.append('job_application', applicantId); // Adding applicantId to the payload
-    formData.append('video', video); // Adding video from store to the payload
+    // formData.append('video', null); // Adding video from store to the payload
 
     // Dispatch the uploadMedia action with formData
     try {
