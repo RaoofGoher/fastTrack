@@ -5,6 +5,16 @@
       "destination": "https://api.fastrakconnect.com/application/:path*"
     },
     {
+      "source": "/",
+      "destination": "/positioninfo",
+      "has": [
+        {
+          "type": "host",
+          "value": "jobs.fastrakconnect.com"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
