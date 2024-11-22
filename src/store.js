@@ -8,7 +8,7 @@ import { personalInfoApi } from './services/career/PersonalInfoApi';
 import personalInfoReducer from './services/career/PersonalInfo';  // Directly import the reducer
 import positionInformationApi from './services/career/positionInfoApi';
 import { experienceApiSlice } from './services/career/experienceApi';
-import { skillAssementApi } from './services/career/skillAssessmentApi';
+import { skillAssessmentApi } from './services/career/skillAssessmentApi';
 import { educationApiSlice } from './services/career/educationApi';
 import { additionalInfoApi } from './services/career/additionalInfo';
 import addMediaReducer  from './services/career/addMediaSlice';
@@ -28,7 +28,7 @@ const store = configureStore({
     [personalInfoApi.reducerPath]: personalInfoApi.reducer,
     [positionInformationApi.reducerPath]: positionInformationApi.reducer,
     [experienceApiSlice.reducerPath]: experienceApiSlice.reducer,
-    [skillAssementApi.reducerPath]: skillAssementApi.reducer,
+    [skillAssessmentApi.reducerPath]: skillAssessmentApi.reducer,
     [educationApiSlice.reducerPath]: educationApiSlice.reducer,
     [additionalInfoApi.reducerPath]: additionalInfoApi.reducer,
     [applicationsApi.reducerPath]: applicationsApi.reducer,
@@ -49,7 +49,7 @@ const store = configureStore({
       .concat(personalInfoApi.middleware)
       .concat(positionInformationApi.middleware)
       .concat(experienceApiSlice.middleware)
-      .concat(skillAssementApi.middleware)
+      .concat(skillAssessmentApi.middleware)
       .concat(educationApiSlice.middleware)
       .concat(additionalInfoApi.middleware)
       .concat(mediaApi.middleware)

@@ -12,7 +12,14 @@ export const educationApiSlice = createApi({
         body: educationData,
       }),
     }),
+    updateEducation: builder.mutation({
+      query: ({ applicantId, updatedData }) => ({
+        url: `application/update-education/${applicantId}/`,
+        method: 'PATCH',
+        body: updatedData,
+      }),
+    }),
   }),
 });
 
-export const { useSubmitEducationMutation } = educationApiSlice;
+export const { useSubmitEducationMutation, useUpdateEducationMutation } = educationApiSlice;

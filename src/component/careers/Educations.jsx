@@ -1,15 +1,18 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useSubmitEducationMutation } from "../../services/career/educationApi"; // Update path as needed
-
+import { useSubmitEducationMutation, useUpdateEducationMutation } from "../../services/career/educationApi"; // Update path as needed
+import { setFormData } from '../../services/career/formDataSlice';
 const Education = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
   const [submitEducation, { isLoading }] = useSubmitEducationMutation();
-
+  const [updateEducation,] = useUpdateEducationMutation();
+  const { education } = useSelector((state) => state.formData);
+  console.log ("education", education)
   // Validation schema
   const validationSchema = Yup.object({
     degree: Yup.string().required("Degree is required"),
@@ -21,33 +24,51 @@ const Education = () => {
 
   // Initial values
   const initialValues = {
-    degree: "",
-    institution: "",
-    graduationDate: "",
+    degree: education && education?.degree ? education.degree : "",
+    institution: education && education?.institute ? education.institute : "",
+    graduationDate: education && education?.graduation_year
+      ? `${education.graduation_year}-01-01` // Convert year to date string
+      : "",
   };
 
   // Submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
+
     try {
-      // Map values to API payload format
-      const payload = [{
-        job_application: applicantId, // Update this with the appropriate value
-        degree: values.degree,
-        institute: values.institution,
-        graduation_year: new Date(values.graduationDate).getFullYear(),
-      }]
-
-      // Make the API call
-      await submitEducation(payload).unwrap();
-
-      // Navigate to next page on success
-      navigate("/additionalinfo");
+      if (education && education.degree) {
+        const mappedPayload = {  
+          degree: values.degree,
+          institute: values.institution, // Renamed field
+          graduation_year: new Date(values.graduationDate).getFullYear(), // Extract the year
+        };
+        const response = await updateEducation({
+          applicantId:applicantId,
+          data: mappedPayload,
+        }).unwrap();
+        console.log("Updated successfully:", response);
+      } else {
+        
+        const mappedPayload = {
+          job_application: applicantId,
+          degree: values.degree,
+          institute: values.institution, // Renamed field
+          graduation_year: new Date(values.graduationDate).getFullYear(), // Extract the year
+        };
+        // Add applicantId to payload
+        const response = await submitEducation(mappedPayload).unwrap();
+        console.log("submit successfully:", response, mappedPayload); 
+        
+        dispatch(setFormData({ componentName: 'education', data: mappedPayload }));
+      }
+             
+      navigate("/additionalInfo"); // Redirect to the next page
     } catch (error) {
-      console.error("Failed to submit education data:", error);
-    } finally {
-      setSubmitting(false);
+      console.error("Error submitting personal info:", error);
     }
+
   };
+    
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
@@ -57,7 +78,7 @@ const Education = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({values, isSubmitting }) => (
           <Form>
             {/* Degree */}
             <div className="mb-6">
@@ -125,15 +146,15 @@ const Education = () => {
             </div>
 
             {/* Submit Button */}
+            <div className="flex justify-between mt-4">
             <button
               type="submit"
-              disabled={isSubmitting || isLoading}
-              className={`px-6 py-2 text-white rounded-md focus:outline-none ${
-                isSubmitting || isLoading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-              }`}
+              className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
             >
-              {isSubmitting || isLoading ? "Submitting..." : "Next"}
+             {education && education.degree ? "Update":"Next"}
             </button>
+            <Link to={"/skillassement"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none">Back</Link>
+            </div>
           </Form>
         )}
       </Formik>

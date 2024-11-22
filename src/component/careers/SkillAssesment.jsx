@@ -1,17 +1,19 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useSubmitSkillsAssessmentMutation } from "../../services/career/skillAssessmentApi";
+import { useNavigate,Link } from "react-router-dom";
+import { useSubmitSkillsAssessmentMutation, useUpdateSkillsMutation } from "../../services/career/skillAssessmentApi";
 import { useDispatch, useSelector } from "react-redux";
+import { setFormData } from '../../services/career/formDataSlice';
 
 const SkillsAssessment = () => {
   const positionAppliedFor = useSelector((state) => state.positionApplied.positionAppliedFor);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
-  const [submitSkillsAssessment, { isLoading, isSuccess, isError, error }] =
-    useSubmitSkillsAssessmentMutation();
-  console.log("position applied for", positionAppliedFor)
+  const [submitSkillsAssessment, { isLoading, isSuccess, isError, error }] = useSubmitSkillsAssessmentMutation();
+  const [updateSkillsAssessment,] = useUpdateSkillsMutation();
+  const { skillAssement } = useSelector((state) => state.formData);
 
   const roleBasedQuestions = {
     "Customer Service Representative": [
@@ -42,24 +44,33 @@ const SkillsAssessment = () => {
       .of(Yup.string())
       .min(1, "Please select at least one language")
       .required("This field is required"),
-    // challengeDescription: Yup.string()
-    //   .required("Please describe a challenging customer service situation"),
-    // troubleshootingExperience: Yup.string()
-    //   .required("Please describe your experience with troubleshooting software or hardware issues"),
-    // technicalCertifications: Yup.string()
-    //   .required("Please list any technical certifications"),
+    challengeDescription: Yup.string()
+      .required("Please describe a challenging customer service situation"),
+    troubleshootingExperience: Yup.string()
+      .required("Please describe your experience with troubleshooting software or hardware issues"),
+    technicalCertifications: Yup.string()
+      .required("Please list any technical certifications"),
   });
 
   // Initial values
   const initialValues = {
-    languages: [],
-    challengeDescription: "",
-    troubleshootingExperience: "",
-    technicalCertifications: "",
+    languages: skillAssement?.languages ? skillAssement.languages.split(",") : [],
+    challengeDescription: skillAssement?.tech_experience_description?.split("\n")[0] || "",
+    troubleshootingExperience: skillAssement?.tech_experience_description?.split("\n")[1] || "",
+    technicalCertifications: skillAssement?.certificates || "",
   };
 
   // Submit handler
   const handleSubmit = async (values) => {
+
+    const formattedData = {
+      languages: values.languages.join(","), // Convert array to a comma-separated string
+      tech_skills: values.tech_skills, // Include technical skills
+      certificates: values.technicalCertifications, // Include certifications
+      tech_experience_description: `${values.challengeDescription}\n${values.troubleshootingExperience}`, // Combine descriptions
+    };
+
+
     const payload = {
       job_application: applicantId, // Adjust this field based on your application flow
       languages: values.languages.join(","),
@@ -68,15 +79,28 @@ const SkillsAssessment = () => {
       tech_experience_description: `${values.challengeDescription}\n${values.troubleshootingExperience}`,
     };
 
-    try {
-      const response = await submitSkillsAssessment(payload).unwrap();
-      console.log("skill assement response", response)
-      navigate("/education"); // Redirect on success
-    } catch (err) {
-      console.error("Submission failed: ", err);
-    }
-  };
+try {
+  if(skillAssement && skillAssement?.languages){
+    const response = await updateSkillsAssessment({
+      applicantId,
+      data: formattedData,
+    }).unwrap();
+    navigate("/education");
+    console.log("Updated successfully:", response);
+  }else {
+     
+    const response = await submitSkillsAssessment(payload).unwrap();
+      console.log("skill assement response", response,payload)
+      navigate("/education"); // Redirect on succes
+      dispatch(setFormData({ componentName: 'skillAssement', data: payload }));
 
+  }
+}catch (err) {
+    console.error("Submission failed: ", err);
+  }
+
+  };
+console.log("skillAssement store", skillAssement)
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Skills Assessment</h2>
@@ -240,16 +264,16 @@ const SkillsAssessment = () => {
             </div>
 
             {/* Submit Button */}
+            <div className="flex justify-between mt-4">
             <button
               type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
-              disabled={isLoading}
             >
-              {isLoading ? "Submitting..." : "Next"}
+             {skillAssement && skillAssement?.languages ? "Update":"Next"}
             </button>
-            {isSuccess && <p className="text-green-500 mt-2">Submission successful!</p>}
-            {isError && <p className="text-red-500 mt-2">{error?.data?.message || "Submission failed"}</p>}
-          </Form>
+            <Link to={"/professionalexp"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none">Back</Link>
+            </div>
+             </Form>
         )}
       </Formik>
     </div>

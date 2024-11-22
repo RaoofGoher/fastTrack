@@ -1,15 +1,19 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { usePostAdditionalInfoMutation } from '../../services/career/additionalInfo';
-import { useSelector } from 'react-redux';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { usePostAdditionalInfoMutation, useUpdateAdditionalInfoMutation } from '../../services/career/additionalInfo';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFormData } from '../../services/career/formDataSlice';
 const AdditionalInformation = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const applicantId = useSelector((state) => state.personalInfo.applicantId);
 
   const [postAdditionalInfo] = usePostAdditionalInfoMutation();
+  const [updateAdditionalInfo] = useUpdateAdditionalInfoMutation();
+
+  const { additionalInfo } = useSelector((state) => state.formData);
 
   // Validation schema
   const validationSchema = Yup.object({
@@ -24,10 +28,10 @@ const AdditionalInformation = () => {
       <h2 className="text-2xl font-semibold mb-4">Additional Information</h2>
       <Formik
         initialValues={{
-          fasTrakInterest: '',
-          strongFit: '',
-          eligibleToWork: '',
-          howDidYouHear: '',
+          fasTrakInterest: additionalInfo && additionalInfo.why_interested ? additionalInfo.why_interested : "",
+          strongFit: additionalInfo && additionalInfo.strong_fit_reason ? additionalInfo.strong_fit_reason : "",
+          eligibleToWork: additionalInfo && additionalInfo.eligible_to_work ? additionalInfo.eligible_to_work : "",
+          howDidYouHear: additionalInfo && additionalInfo.source_of_opportunity ? additionalInfo.source_of_opportunity : "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
@@ -35,14 +39,27 @@ const AdditionalInformation = () => {
             job_application: applicantId,
             why_interested: values.fasTrakInterest,
             strong_fit_reason: values.strongFit,
-            eligible_to_work: values.eligibleToWork === 'yes',
+            eligible_to_work: values.eligibleToWork,
             source_of_opportunity: values.howDidYouHear,
           };
 
           try {
-            await postAdditionalInfo(payload).unwrap();
-            console.log("payload", payload);
-            navigate('/attachements');
+
+            if (additionalInfo && additionalInfo.why_interested ) {
+              await updateAdditionalInfo({
+                applicantId,
+                data: values,
+              }).unwrap();
+              console.log("Updated successfully:", payload);
+              navigate('/attachements');
+            }else {
+              const response = await postAdditionalInfo(payload).unwrap();
+              dispatch(setFormData({ componentName: 'additionalInfo', data: payload }));      
+              console.log("payload", response);
+              navigate('/attachements');
+
+            }
+            
           } catch (error) {
             console.error('Error submitting form:', error);
           } finally {
@@ -123,16 +140,14 @@ const AdditionalInformation = () => {
             </div>
 
             {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                className={`w-full py-2 px-4 rounded-md text-white ${
-                  isSubmitting ? 'bg-gray-400' : 'bg-indigo-600 hover:bg-indigo-700'
-                }`}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Submitting...' : 'Next'}
-              </button>
+            <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+            >
+             {additionalInfo && additionalInfo?.why_interested ? "Update":"Next"}
+            </button>
+            <Link to={"/professionalexp"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none">Back</Link>
             </div>
           </Form>
         )}
