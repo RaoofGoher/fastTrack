@@ -18,18 +18,18 @@ const ProfessionalExperienceForm = () => {
 
   // Validation schema
   const validationSchema = Yup.object({
-    // recentJobTitle: Yup.string().required("Recent Job title is required").nullable(),
-    // recentCompany: Yup.string().required("Company name is required").nullable(),
-    // recentStartDate: Yup.date().required("Start date is required").nullable(),
-    // recentEndDate: Yup.date().required("End date is required").nullable()
-    //   .min(Yup.ref('recentStartDate'), "End date must be after start date"),
-    // recentResponsibilities: Yup.string().required("Responsibilities are required").nullable(),
-    // previousJobTitle: Yup.string().required("Previous Job title is required").nullable(),
-    // previousCompany: Yup.string().required("Previous Company name is required").nullable(),
-    // previousStartDate: Yup.date().required("Start date is required").nullable(),
-    // previousEndDate: Yup.date().required("End date is required").nullable()
-    //   .min(Yup.ref('previousStartDate'), "End date must be after start date"),
-    // previousResponsibilities: Yup.string().required("Previous job Responsibilities are required").nullable(),
+    recentJobTitle: Yup.string().required("Recent Job title is required").nullable(),
+    recentCompany: Yup.string().required("Company name is required").nullable(),
+    recentStartDate: Yup.date().required("Start date is required").nullable(),
+    recentEndDate: Yup.date().required("End date is required").nullable()
+      .min(Yup.ref('recentStartDate'), "End date must be after start date"),
+    recentResponsibilities: Yup.string().required("Responsibilities are required").nullable(),
+    previousJobTitle: Yup.string().required("Previous Job title is required").nullable(),
+    previousCompany: Yup.string().required("Previous Company name is required").nullable(),
+    previousStartDate: Yup.date().required("Start date is required").nullable(),
+    previousEndDate: Yup.date().required("End date is required").nullable()
+      .min(Yup.ref('previousStartDate'), "End date must be after start date"),
+    previousResponsibilities: Yup.string().required("Previous job Responsibilities are required").nullable(),
   });
 
 
@@ -320,8 +320,11 @@ const ProfessionalExperienceForm = () => {
                 >
                   {professionalExp && professionalExp[0]?.job_title ? "Update" : "Next"}
                 </button>
-                <Link to={"/jobs"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none">Back</Link>
-              </div>
+                <div>
+                <Link to={"/jobs"} className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-500 focus:outline-none mr-4">Back</Link>
+                <button onClick={handleSubmit2} className="bg-blue-500 px-4 py-2 rounded-lg text-white border-2 border-blue-500 hover:bg-white hover:text-blue-500">Skip</button>
+                </div>
+               </div>
 
 
             </Form>

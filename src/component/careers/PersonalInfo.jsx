@@ -51,6 +51,7 @@ const PersonalInformationForm = () => {
           applicantId,
           data: values,
         }).unwrap();
+        navigate("/positioninfo");
         console.log("Updated successfully:", response);
       } else {
         // Submit new personal info
