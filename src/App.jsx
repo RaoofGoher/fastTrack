@@ -42,7 +42,7 @@ function App() {
                     <Route path='/invoice' element={<Invoice />} />
                     <Route path='/drive' element={<ConnectWithDrive />} />
                     <Route path='/driveform' element={<DriveForm />} />
-                    <Route path='/careers' element={<CareerPage />} />
+                    <Route path='/jobs' element={<CareerPage />} />
                     <Route path='/uploaddocs' element={<UploadButton />} />
                     <Route path="/oauth-callback" element={<OAuthCallback />} />
 

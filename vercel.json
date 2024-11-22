@@ -6,7 +6,7 @@
     },
     {
       "source": "/",
-      "destination": "/positioninfo",
+      "destination": "/jobs",
       "has": [
         {
           "type": "host",
