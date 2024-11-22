@@ -11,7 +11,14 @@ export const additionalInfoApi = createApi({
         body: data,
       }),
     }),
+    updateAdditionalInfo: builder.mutation({
+      query: ({ applicantId, data }) => ({
+        url: `application/update-additional-info/${applicantId}/`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { usePostAdditionalInfoMutation } = additionalInfoApi;
+export const { usePostAdditionalInfoMutation, useUpdateAdditionalInfoMutation } = additionalInfoApi;
